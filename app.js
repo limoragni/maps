@@ -125,30 +125,3 @@ io.sockets.on('connection', function (socket) {
 	})
 	
 });
-
-
-
-Connection url: mongodb://nodejitsu_limoragni:rmvu66uk7rjj263topikd6kjf5@ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817
-help:    
-help:    Connect with the `mongo` cli client:
-help:    
-             $ mongo ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817 -u nodejitsu_limoragni -p rmvu66uk7rjj263topikd6kjf5
-help:    
-help:    Connect with the `mongodb-native module`:
-help:    
-             var mongodb = require('mongodb');
-             var db = new mongodb.Db('nodejitsu_limoragni_nodejitsudb2595313817',
-               new mongodb.Server('ds059887.mongolab.com', 59887, {})
-             );
-             db.open(function (err, db_p) {
-               if (err) { throw err; }
-               db.authenticate('nodejitsu_limoragni', 'rmvu66uk7rjj263topikd6kjf5', function (err, replies) {
-                 // You are now connected and authenticated.
-               });
-             });
-help:    
-help:    Connect with the `mongoose` module:
-help:    
-             var mongoose = require('mongoose');
-             mongoose.connect('mongodb://nodejitsu_limoragni:rmvu66uk7rjj263topikd6kjf5@ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817');
-help:    
