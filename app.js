@@ -17,7 +17,7 @@ var io = require('socket.io').listen(server);
 app.configure(function(){
 	app.use(express.bodyParser());
 	app.use(express.cookieParser());
-	app.use(express.session({secret: 'secret', store: sessionStore}));
+	//app.use(express.session({secret: 'secret', store: sessionStore}));
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
 })
