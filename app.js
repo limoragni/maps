@@ -3,13 +3,13 @@ var express = require('express')
 
 var app = express();
 var MongoStore = require('connect-mongo')(express);
-var sessionStore = new MongoStore({
+/*var sessionStore = new MongoStore({
 	db: 'maps',
 	host: 'ds059887.mongolab.com',
 	port: 59887,
 	username: 'nodejitsu_limoragni',
 	password: 'rmvu66uk7rjj263topikd6kjf5',
-})
+})*/
  
 var server = app.listen(1344);
 var io = require('socket.io').listen(server);
