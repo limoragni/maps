@@ -2,19 +2,19 @@ var express = require('express')
   , http = require('http')
 
 var app = express();
-var MongoStore = require('connect-mongo')(express);
-var sessionStore = new MongoStore({
-	db: 'maps',
-	host: 'localhost'
-})
+//var MongoStore = require('connect-mongo')(express);
+//var sessionStore = new MongoStore({
+//	db: 'maps',
+//	host: 'localhost'
+//})
 
 var server = app.listen(1344);
 var io = require('socket.io').listen(server);
 
 app.configure(function(){
-	app.use(express.bodyParser());
-	app.use(express.cookieParser());
-	app.use(express.session({secret: 'secret', store: sessionStore}));
+	//app.use(express.bodyParser());
+	//app.use(express.cookieParser());
+	//app.use(express.session({secret: 'secret', store: sessionStore}));
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
 })
@@ -26,7 +26,7 @@ app.get('/check', function(req, res){
 })
 
 
-app.post('/register', function(req,res){
+/*app.post('/register', function(req,res){
 	
 	var User = require('./models/Users')
 	var mongoose = require('mongoose');
@@ -73,7 +73,7 @@ app.post('/register', function(req,res){
 	
   	
 })
-
+*/
 var games = {}
 games.list = {};
 games.list['default'] = 'default';
