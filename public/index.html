@@ -1,0 +1,53 @@
+<!DOCTYPE>
+
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="ui/css/style.css">
+
+		<script type="text/javascript" src="lib/mootools.js"></script>
+		<script type="text/javascript" src="lib/mootools-more.js"></script>
+		<script type="text/javascript" src="lib/raphael.js"></script>
+		<script type="text/javascript" src="lib/raphael-zpd.js"></script>
+		<script type="text/javascript" src="controllers/bootstrap.js"></script>
+		<script type="text/javascript" src="db/paths.js"></script>
+		<script type="text/javascript" src="db/options.js"></script>
+		<script type="text/javascript" src="classes/svg.js"></script>
+		<script type="text/javascript" src="classes/auth.js"></script>
+		<script type="text/javascript" src="classes/ui.js"></script>
+		<script type="text/javascript" src="classes/game.js"></script>
+		<script type="text/javascript" src="classes/clientServer.js"></script>
+		<script type="text/javascript" src="controllers/ioEvents.js"></script>
+		<script type="text/javascript" src="controllers/gameEvents.js"></script>
+		<script type="text/javascript" src="controllers/initialize.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+	
+	</head>
+	<body>
+		<div id="main-menu">
+			<div id="register-parent">
+				<input id="username" type="text" name="username">
+				<input id="password" type="text" name="password">
+				<input class="ui-event" id="register" type="button" value="Send">
+			</div>
+			<div id="mod-parent">
+				<input id="multiplayer" type="button" value="Multi Player">
+				<input id="singleplayer" type="button" value="Single Player">
+			</div>
+			<div id="multiplayer-parent">
+				<div id="game-list">
+					
+				</div>
+				<input type="button" id="create-game" value="Create">
+				<input id="join-game" type="button" value="Join">
+			</div>			
+		</div>
+		
+		<div id="container">
+			<div id="map">
+				
+			</div>
+		</div>
+		<input id="start" type="button" value="start">
+		
+	</body>
+</html>

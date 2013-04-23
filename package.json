@@ -1,0 +1,20 @@
+{
+  "name": "maps",
+  "version": "0.0.1",
+  "description": "Maps game",
+  "homepage": "http://localhost:1344",
+  "author": {
+    "name": "Guido Villaverde",
+    "email": "guidovillaverde@gmail.com"
+  },
+  "dependencies": {
+    "socket.io": "0.9.14",
+    "express": "3.1.2",
+    "node-static": "0.6.8",
+    "mongoose": "3.6.4",
+    "bcrypt": "0.7.5",
+    "weld": "0.2.2"
+  },
+  "engine": "node 0.10.3",
+  "_id": "maps0.5"
+}
