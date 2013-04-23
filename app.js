@@ -3,13 +3,9 @@ var express = require('express')
 
 var app = express();
 var MongoStore = require('connect-mongo')(express);
-/*var sessionStore = new MongoStore({
-	db: 'maps',
-	host: 'ds059887.mongolab.com',
-	port: 59887,
-	username: 'nodejitsu_limoragni',
-	password: 'rmvu66uk7rjj263topikd6kjf5',
-})*/
+var sessionStore = new MongoStore({
+	url: 'mongodb://nodejitsu_limoragni:rmvu66uk7rjj263topikd6kjf5@ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817'
+})
  
 var server = app.listen(1344);
 var io = require('socket.io').listen(server);
@@ -17,7 +13,7 @@ var io = require('socket.io').listen(server);
 app.configure(function(){
 	app.use(express.bodyParser());
 	app.use(express.cookieParser());
-	//app.use(express.session({secret: 'secret', store: sessionStore}));
+	app.use(express.session({secret: 'secret', store: sessionStore}));
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
 })
