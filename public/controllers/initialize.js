@@ -25,7 +25,7 @@ window.addEvent('domready', function(){
 	
 	getClasses.init();
 	
-	/*var check = new Request({
+	var check = new Request({
 		url: '/check',
 		method: 'get',
 		onSuccess: function(r){
@@ -37,7 +37,7 @@ window.addEvent('domready', function(){
 				events.noLogin();
 			}
 		}
-	})*/
+	})
 	
 	check.send();
 
