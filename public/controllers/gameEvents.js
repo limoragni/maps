@@ -7,10 +7,9 @@ var GameEvents = new Class({
 
 	onLogin: function(session){
 		game.session = session;
+		console.log(session);
 		mainMenu.show();
 		mainMenu.mod(function(mod){
-			console.log(mod)
-			console.log(mod == 'multiplayer')
 			if(mod == 'multiplayer') ioEvents.showGames();
 		});
 	},
@@ -22,8 +21,6 @@ var GameEvents = new Class({
 	
 
 	start: function(){
-		$('start').setStyle('display', 'none');
-		
 		game.players.current = game.getPlayerByNumber(1).id;
 		game.setQueue();
 		
@@ -34,6 +31,7 @@ var GameEvents = new Class({
 			console.log(data);
 			game.propertiesSet(data);
 			console.log('First Move: ' + game.players.current);
+			mainMenu.hide();
 		});
 		
 		this.ask();

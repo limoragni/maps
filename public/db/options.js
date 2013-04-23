@@ -15,7 +15,7 @@ db.options = {
         cursor: 'pointer'
 	},
 
-	host: 'http://localhost:1344',
+	host: 'http://lim-map.jit.su',
 
 	hardplayer: {
 		id: 0,

@@ -1,6 +1,6 @@
 {
   "name": "maps",
-  "version": "0.0.1",
+  "version": "0.0.1-2",
   "description": "Maps game",
   "homepage": "http://localhost:1344",
   "author": {
@@ -13,8 +13,15 @@
     "node-static": "0.6.8",
     "mongoose": "3.6.4",
     "bcrypt": "0.7.5",
-    "weld": "0.2.2"
+    "weld": "0.2.2",
+    "connect-mongo": "0.3.2"
   },
-  "engine": "node 0.10.3",
-  "_id": "maps0.5"
+  "_id": "maps0.5",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "subdomain": "lim-map",
+  "engines": {
+    "node": "0.8.x"
+  }
 }

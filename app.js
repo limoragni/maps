@@ -90,13 +90,14 @@ io.sockets.on('connection', function (socket) {
 		games[data] = {};
 		games[data].count = 0;
 		games[data].players = {};
+		games[data].id = data;
 		 
 		games[data].players[data] = {id: data, number: games[data].count + 1, color: colors[games[data].count]}
 		games[data].players.lenght = games[data].count + 1;
 		var send = games[data];
 		games[data].count += 1;
 		games.list[data] = data;
-		io.sockets.emit('createGame_back', games.list);
+		io.sockets.emit('createGame_back', games[data]);
 	})
 
 	socket.on('askGames', function(n){
@@ -104,11 +105,11 @@ io.sockets.on('connection', function (socket) {
 	})
 	
 	socket.on('join', function(data){
-		game.players[data] = {id: data, number: count + 1, color: colors[count]}
-		game.players.lenght = count + 1;
-		var send = game.players;
-		io.sockets.emit('join_back', game.players)
-		count += 1;
+		games[data.joinedGame].players[data.username] = {id: data.username, number: games[data.joinedGame].count + 1, color: colors[games[data.joinedGame].count]}
+		games[data.joinedGame].players.lenght = games[data.joinedGame].count + 1;
+		var send = games[data.joinedGame].players;
+		io.sockets.emit('join_back', games[data.joinedGame]);
+		games[data.joinedGame].count += 1;
 	});
 	
 	socket.on('click', function (data) {
@@ -116,8 +117,8 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('start', function(data){
-		game = data;
-		io.sockets.emit('start_back', game);
+		games[data.id] = data;
+		io.sockets.emit('start_back', games[data.id]);
 	})
 	
 });

@@ -15,6 +15,6 @@ li{
 #multiplayer-parent, #mod-parent{
 	display:none;
 }
-#game-list{
+#game-list, #join-list{
 	background-color: #fff;
 }

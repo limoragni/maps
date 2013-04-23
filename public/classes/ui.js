@@ -72,6 +72,8 @@ var MainMenu = new Class({
 	},
 
 	hide: function(){
+		console.log('OK')
+		console.log(this.node)
 		this.grayOut('off');
 		this.node.style.display = 'none';
 	},
@@ -92,21 +94,51 @@ var MainMenu = new Class({
 		$('multiplayer-parent').setStyle('display', 'block');
 		
 		$('create-game').addEvent('click', function(){
-
+			$('multiplayer-parent').setStyle('display', 'none');
 			ioEvents.createGame();
 		})
+		
+		$('join-game').addEvent('click', function(){
+			
+			var inputs = document.getElementsByTagName('input');
+			for (i in inputs){
+				console.log(inputs[i]);
+				if(inputs[i].type == "radio" && inputs[i].checked){
+					var selected = inputs[i].value
+				}
+			}
+			$('join-parent').setStyle('display', 'block');
+			$('multiplayer-parent').setStyle('display', 'none');
+			console.log('SELECTED GAME: ' + selected);
+			ioEvents.joinGame(selected);
+		})
+
+
 	},
 
 	showGames: function(data){
-		console.log(data);
 		$('game-list').innerHTML = '';
 		for (v in data){
-			console.log(v)
 			var t = new Element('li')
 			var c = new Element('input', {id:data[v], value:data[v], name: 'game', type:"radio"});
 			t.innerHTML = data[v]
 			c.inject($('game-list'));
 			t.inject($('game-list'));
+			
+		}
+	},
+
+	showJoined: function(players){
+		$('start-game').addEvent('click', function(){
+			events.start();
+		})
+
+		for (v in players){
+			if(players[v].id){
+				var t = new Element('li');
+				t.innerHTML = players[v].id;
+				t.inject($('join-list'));
+			}
 			
 		}
 	}
