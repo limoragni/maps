@@ -3,8 +3,7 @@ var $config = {
 		url: 'mongodb://nodejitsu_limoragni:rmvu66uk7rjj263topikd6kjf5@ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817'
 	},
 	local:{
-		host: 'localhost',
-		db: 'maps'
+		url: 'mongodb://localhost/maps'
 	}
 };
 
@@ -44,7 +43,7 @@ app.post('/register', function(req,res){
 	
 	var User = require('./models/Users')
 	var mongoose = require('mongoose');
-	mongoose.connect('mongodb://nodejitsu_limoragni:rmvu66uk7rjj263topikd6kjf5@ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817', function(err){
+	mongoose.connect(config, function(err){
 		if (err) throw err;
 		console.log('Successfully connected to MongoDB');
 	});
