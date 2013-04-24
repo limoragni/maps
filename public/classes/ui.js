@@ -47,6 +47,7 @@ var Ui = new Class({
 			div.style.top = '0px';
 			div.id = 'ui-grayout';
 		}else if(state == 'off'){
+			console.log($('ui-grayout'));
 			if($('ui-grayout')){
 				$('ui-grayout').setStyle('display', 'none')
 			}

@@ -1,11 +1,26 @@
+var $config = {
+	prod: {
+		url: 'mongodb://nodejitsu_limoragni:rmvu66uk7rjj263topikd6kjf5@ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817'
+	},
+	local:{
+		host: 'localhost',
+		db: 'maps'
+	}
+};
+
+if(process.env.SUBDOMAIN){
+	var config = $config.prod;
+}else{
+	var config = $config.local;
+}
+
+
 var express = require('express')
   , http = require('http')
 
 var app = express();
 var MongoStore = require('connect-mongo')(express);
-var sessionStore = new MongoStore({
-	url: 'mongodb://nodejitsu_limoragni:rmvu66uk7rjj263topikd6kjf5@ds059887.mongolab.com:59887/nodejitsu_limoragni_nodejitsudb2595313817'
-})
+var sessionStore = new MongoStore(config);
  
 var server = app.listen(1344);
 var io = require('socket.io').listen(server);
@@ -76,6 +91,7 @@ app.post('/register', function(req,res){
 var games = {}
 games.list = {};
 games.list['default'] = 'default';
+
 var colors = {
 	0:'#004444',
 	1:'#004400',
@@ -90,6 +106,7 @@ io.sockets.on('connection', function (socket) {
 		games[data].count = 0;
 		games[data].players = {};
 		games[data].id = data;
+		games[data].socket = socket.id;
 		 
 		games[data].players[data] = {id: data, number: games[data].count + 1, color: colors[games[data].count]}
 		games[data].players.lenght = games[data].count + 1;
@@ -118,6 +135,15 @@ io.sockets.on('connection', function (socket) {
 	socket.on('start', function(data){
 		games[data.id] = data;
 		io.sockets.emit('start_back', games[data.id]);
+	})
+
+	socket.on('disconnect', function(){
+		for (g in games){
+			if(games[g].socket == socket.id){
+				delete games[g];
+				delete games.list[g];
+			}
+		}
 	})
 	
 });
