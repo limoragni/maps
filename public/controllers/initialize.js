@@ -39,6 +39,9 @@ window.addEvent('domready', function(){
 		}
 	})
 	
+	$('start-game').addEvent('click', function(){
+			events.start();
+	})
 	check.send();
 
 	

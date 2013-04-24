@@ -43,7 +43,7 @@ app.post('/register', function(req,res){
 	
 	var User = require('./models/Users')
 	var mongoose = require('mongoose');
-	mongoose.connect(config, function(err){
+	mongoose.connect(config.url, function(err){
 		if (err) throw err;
 		console.log('Successfully connected to MongoDB');
 	});
@@ -112,7 +112,8 @@ io.sockets.on('connection', function (socket) {
 		var send = games[data];
 		games[data].count += 1;
 		games.list[data] = data;
-		io.sockets.emit('createGame_back', games[data]);
+		socket.emit('createGame_back', games[data]);
+		io.sockets.emit('refreshGames', games.list);
 	})
 
 	socket.on('askGames', function(n){

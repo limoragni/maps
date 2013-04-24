@@ -7,6 +7,7 @@ var Game = new Class({
 	players:{},
 	options:{},
 	svg:{},
+	chance: 0,
 
 	initialize: function(regions, svg){
 		this.regions = regions;
@@ -48,7 +49,8 @@ var Game = new Class({
 			queue: this.queue,
 			currentRegion: this.currentRegion,
 			players: this.players,
-			options: this.options
+			options: this.options,
+			chance: this.chance
 		}
 		return r;
 	},

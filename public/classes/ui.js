@@ -34,7 +34,7 @@ var Ui = new Class({
 	
 	grayOut: function(state){
 		
-		if(!state){
+		if(!state && !$('ui-grayout')){
 			var div = document.createElement('div');
 			$$('body')[0].appendChild(div);
 			div.style.position = 'absolute';
@@ -73,8 +73,6 @@ var MainMenu = new Class({
 	},
 
 	hide: function(){
-		console.log('OK')
-		console.log(this.node)
 		this.grayOut('off');
 		this.node.style.display = 'none';
 	},
@@ -103,7 +101,6 @@ var MainMenu = new Class({
 			
 			var inputs = document.getElementsByTagName('input');
 			for (i in inputs){
-				console.log(inputs[i]);
 				if(inputs[i].type == "radio" && inputs[i].checked){
 					var selected = inputs[i].value
 				}
@@ -130,10 +127,7 @@ var MainMenu = new Class({
 	},
 
 	showJoined: function(players){
-		$('start-game').addEvent('click', function(){
-			events.start();
-		})
-
+		$('join-list').innerHTML = '';
 		for (v in players){
 			if(players[v].id){
 				var t = new Element('li');
