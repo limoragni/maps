@@ -87,9 +87,66 @@ app.post('/register', function(req,res){
   	
 })
 
-var games = {}
-games.list = {};
-games.list['default'] = 'default';
+
+///// SERVER OBJECT /////
+function Server(){
+	this.games = {};
+	this.list = {};
+};
+
+Server.prototype.createGame = function(creator, colors){
+	this.games[id] = new Game(creator, colors);
+	this.list[id] = {
+		id: game.id,
+		status: game.status
+	}
+};
+
+Server.prototype.closeGame = function(id){
+	delete this.list[id];
+	delete this.games[id]; //TODO save the game after delete.
+};
+
+
+/*Server.prototype.gameList = function(){
+	var list = {};
+	for (g in this.games){
+		var game = this.games[g];
+		list[g] = {
+			id: game.id,
+			status: game.status
+		};
+	}
+};*/
+
+////// GAME OBJECT /////
+function Game(creator, colors){
+	this.id = this.setId(creator);
+	this.players = {};
+	this.colors = colors;
+	this.status = 0; // 1 playing - 0 aviable
+};
+
+Game.prototype.setId = function(){
+	this.date = new Date();
+	this.id = creator + this.date.valueOf();
+};
+
+Game.prototype.setPLayer = function(id, color){
+	this.players[id] = id;
+	this.players[id].number = this.players.lenght;
+	this.players[id].color = this.colors[this.players.lenght];
+
+};
+
+///// PLAYER OBJECT /////
+function Player(id, color){
+	this.id = id;
+	this.color = color;
+	this.socket = '';
+};
+
+var server = new Server();
 
 var colors = {
 	0:'#004444',
@@ -100,6 +157,10 @@ var colors = {
 
 io.sockets.on('connection', function (socket) {
 
+	socket.on('askGames', function(n){
+		socket.emit('askGames_back', server.list);
+	})
+	
 	socket.on('createGame', function(data){
 		games[data] = {};
 		games[data].count = 0;
@@ -116,9 +177,7 @@ io.sockets.on('connection', function (socket) {
 		io.sockets.emit('refreshGames', games.list);
 	})
 
-	socket.on('askGames', function(n){
-		socket.emit('askGames_back', games.list);
-	})
+	
 	
 	socket.on('join', function(data){
 		games[data.joinedGame].players[data.username] = {id: data.username, number: games[data.joinedGame].count + 1, color: colors[games[data.joinedGame].count]}

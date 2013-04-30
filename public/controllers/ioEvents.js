@@ -57,12 +57,12 @@ var IoEvents = new Class({
 		clientServer.socket.on('createGame_back', function(data){
 			console.log('THE GAME: ' + data.players + 'WAS CREATED');
 			mainMenu.showJoined(data.players);
-			game.propertiesSet(data);
+			//game.propertiesSet(data); TEORICAMENTE NO ES NECESARIO REFRESCAR DATOS EN ESTA INSTANCIA
 			
 			//AFTER CREATE, LISTEN FOR FURTHER JOININGS
 			clientServer.socket.on('join_back', function (data) {
 				console.log("NEW PLAYER ADDED TO THE GAME");
-				game.propertiesSet(data);
+				//game.propertiesSet(data); TEORICAMENTE NO ES NECESARIO REFRESCAR DATOS EN ESTA INSTANCIA
 				mainMenu.showJoined(data.players);
 			});
 		})
