@@ -1,6 +1,6 @@
 var Game = new Class({
 	
-	session:{},
+	session:{}, //@TODO MOVE TO AUTH
 	regions:{},
 	queue:[],
 	currentRegion:{},
