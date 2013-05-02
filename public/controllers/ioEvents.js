@@ -4,6 +4,24 @@ var IoEvents = new Class({
 
 	},
 
+	createGame: function(){
+		
+		//ASK SERVER FOR GAME CREATTON. RECIVES BACK THE GAME OBJECT
+		clientServer.socket.emit('createGame', game.session.username);
+		clientServer.socket.on('createGame_back', function(data){
+			console.log('THE GAME: ' + data.id + ' WAS CREATED');
+			mainMenu.showJoined(data.players);
+			//game.propertiesSet(data); TEORICAMENTE NO ES NECESARIO REFRESCAR DATOS EN ESTA INSTANCIA
+			
+			//AFTER CREATE, LISTEN FOR FURTHER JOININGS
+			clientServer.socket.on('join_back', function (data) {
+				console.log("NEW PLAYER ADDED TO THE GAME");
+				//game.propertiesSet(data); TEORICAMENTE NO ES NECESARIO REFRESCAR DATOS EN ESTA INSTANCIA
+				mainMenu.showJoined(data.players);
+			});
+		})
+	},
+	
 	joinGame: function(joinedGame){
 		
 		//JOIN THE GAME
@@ -50,23 +68,7 @@ var IoEvents = new Class({
 		})
 	},
 
-	createGame: function(){
-		
-		//ASK SERVER FOR GAME CREATTON. RECIVES BACK THE GAME OBJECT
-		clientServer.socket.emit('createGame', game.session.username);
-		clientServer.socket.on('createGame_back', function(data){
-			console.log('THE GAME: ' + data.players + 'WAS CREATED');
-			mainMenu.showJoined(data.players);
-			//game.propertiesSet(data); TEORICAMENTE NO ES NECESARIO REFRESCAR DATOS EN ESTA INSTANCIA
-			
-			//AFTER CREATE, LISTEN FOR FURTHER JOININGS
-			clientServer.socket.on('join_back', function (data) {
-				console.log("NEW PLAYER ADDED TO THE GAME");
-				//game.propertiesSet(data); TEORICAMENTE NO ES NECESARIO REFRESCAR DATOS EN ESTA INSTANCIA
-				mainMenu.showJoined(data.players);
-			});
-		})
-	},
+	
 
 	startGame: function(){
 		//LISTEN FOR CLICKS ON REGIONS

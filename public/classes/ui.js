@@ -118,8 +118,8 @@ var MainMenu = new Class({
 		$('game-list').innerHTML = '';
 		for (v in data){
 			var t = new Element('li')
-			var c = new Element('input', {id:data[v], value:data[v], name: 'game', type:"radio"});
-			t.innerHTML = data[v]
+			var c = new Element('input', {id:data[v].id, value:data[v].id, name: 'game', type:"radio"});
+			t.innerHTML = data[v].id + " " + data[v].status;
 			c.inject($('game-list'));
 			t.inject($('game-list'));
 			
