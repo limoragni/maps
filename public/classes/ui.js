@@ -56,6 +56,18 @@ var Ui = new Class({
 	nextScreen: function(isin, out){
 		$(isin).setStyle('display', 'block');
 		$(out).setStyle('display', 'none');
+	},
+
+	getRadio: function(cl){
+		var r = null;
+		$$('.' + cl).each(function(el){
+			if(el.checked){
+				console.log(el.value)
+				r = el.value;
+			}
+			
+		});
+		return r;
 	}
 	
 });
@@ -91,7 +103,7 @@ var MainMenu = new Class({
 		$('game-list').innerHTML = '';
 		for (v in data){
 			var t = new Element('li')
-			var c = new Element('input', {id:data[v].id, value:data[v].id, name: 'game', type:"radio"});
+			var c = new Element('input', {id:data[v].id, value:data[v].id, name: 'game', type:"radio", class:"radio-game"});
 			t.innerHTML = data[v].id + " " + data[v].status;
 			c.inject($('game-list'));
 			t.inject($('game-list'));

@@ -5,10 +5,16 @@ var Game = new Class({
 	queue:[],
 	currentRegion:{},
 	players:{},
-	options:{},
+	playersLength: 0,
+	currentPlayer:'',
+	options:{
+		level: '',
+		mod: ''
+	},
 	svg:{},
 	chance: 0,
 	id: '',
+	date: 0,
 
 	initialize: function(regions, svg){
 		this.regions = regions;
@@ -36,7 +42,7 @@ var Game = new Class({
 	},
 
 	setPlayer: function(data){
-		this.players = data;
+		this.players[data.id] = new Player(data);
 	},
 
 	propertiesSet: function(data){
@@ -58,24 +64,25 @@ var Game = new Class({
 	},
 
 	nextPlayer: function(){
-		var c = this.players.current;
+		var c = this.currentPlayer;
 		var n = this.players[c].number;
 		var add = n + 1;
-		if(add > this.players.lenght){
+		if(add > this.playersLength){
 			var set = 1;
 		}else{
 			var set = add;
 		}
 		var player = this.getPlayerByNumber(set);
-		this.players.current = player.id;
-		if(this.players.current == this.session.username){
+		this.currentPlayer = player.id;
+		if(this.currentPlayer == this.session.username){
 			this.svg.allowClick();
 		}
 	},
 
 	getPlayerByNumber: function(n){
-		var r= null;
+		
 		for (v in this.players){
+			console.log(this.players[v].number + '  ' + n);
 			if(parseInt(this.players[v].number) == n){
 				var r = this.players[v]
 			}
@@ -85,7 +92,7 @@ var Game = new Class({
 	},
 
 	addScore: function(){
-		this.players[this.players.current].score += 1;
+		this.players[this.currentPlayer].score += 1;
 	}
 
 });
@@ -101,10 +108,10 @@ var Player = new Class({
 		error:{}
 	},
 
-	initialize: function(id, color, number){
-		this.color = color;
-		this.id = id;
-		this.number = number
+	initialize: function(op){
+		for (i in op){
+			this[i] = op[i];
+		}
 	},
 
 	

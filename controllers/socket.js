@@ -27,11 +27,7 @@ module.exports = function(io){
 		});
 
 		socket.on('start', function(data){
-			console.log("QUE ME LLEGA")
-			console.log(data);
 			server.games[data.id].setPublics(data);
-			console.log('START_BACK: ');
-			console.log(server.games[data.id].getPublics())
 			io.sockets.emit('start_back', server.games[data.id].getPublics());
 		})
 

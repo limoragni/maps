@@ -3,11 +3,11 @@ var IoEvents = new Class({
 	initialize: function(){
 		//STABLISH SOCKET CONNECTION
 		clientServer.connect();
-		this.setCallbacks();
+		
 	},
 
 	createGame: function(){
-		$('multiplayer-parent').setStyle('display', 'none');
+		mainMenu.nextScreen('join-parent', 'multiplayer-parent');
 		//ASK SERVER FOR GAME CREATTON. RECIVES BACK THE GAME OBJECT
 		clientServer.socket.emit('createGame', game.session.username);
 		clientServer.socket.on('createGame_back', function(data){
@@ -19,12 +19,10 @@ var IoEvents = new Class({
 	
 	joinGame: function(){
 		mainMenu.nextScreen('join-parent', 'multiplayer-parent')
-		var inputs = document.getElementsByTagName('input');
-		for (i in inputs){
-			if(inputs[i].type == "radio" && inputs[i].checked){
-				var joinedGame = inputs[i].value
-			}
-		}
+		console.log('INPUTS')
+		var radio = mainMenu.getRadio('radio-game');
+		var joinedGame = radio;
+		
 		
 		//JOIN THE GAME
 		console.log("YOU HAVE JOINED TO: " + joinedGame)
@@ -37,10 +35,10 @@ var IoEvents = new Class({
 	},
 
 	showGames: function(){
+		this.setCallbacks();
+		game.options.mod = 'mp';
 		//SHOW MULTIPLAYER OPTIONS.
 		mainMenu.nextScreen('multiplayer-parent', 'mod-parent')
-		
-		
 		//ASK FOR LISTED GAMES
 		clientServer.socket.emit('askGames', null);
 		
@@ -68,8 +66,10 @@ var IoEvents = new Class({
 
 		//LISTEN FOR SERVER RESPONSE ON START
 		clientServer.socket.on('start_back', function (data) {
+			console.log('DATA FROM START BACK')
+			console.log(data)
 			game.propertiesSet(data);
-			console.log('First Move: ' + game.players.current);
+			console.log('First Move: ' + game.currentPlayer);
 			router.send('events-start', null);
 		});
 

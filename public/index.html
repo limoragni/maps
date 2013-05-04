@@ -34,7 +34,7 @@
 			</div>
 			<div id="mod-parent">
 				<input class="event" id="ioEvents-showGames" type="button" value="Multiplayer">
-				<input id="singleplayer" type="button" value="Single Player">
+				<input class="event" id="uiEvents-singlePlayer" type="button" value="Single Player">
 			</div>
 			<div id="multiplayer-parent">
 				<div id="game-list">
@@ -42,6 +42,15 @@
 				</div>
 				<input class="event" type="button" id="ioEvents-createGame" value="Create">
 				<input class="event" id="ioEvents-joinGame" type="button" value="Join">
+			</div>
+			<div id="singlePlayer-parent">
+				<input class="radio-level" type="radio" id="begginer" value="Begginer" name="level"> 
+				<li>Begginer</li>
+				<input class="radio-level" type="radio" id="intermedium" value="Intermedium" name="level"> 
+				<li>Intermedium</li>
+				<input class="radio-level" type="radio" id="advanced" value="Advanced" name="level"> 
+				<li>Advanced</li>
+				<input class="event" type="button" id="uiEvents-setLevel" value="Start">
 			</div>	
 			<div id="join-parent">
 				<div id="join-list">
