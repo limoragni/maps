@@ -12,7 +12,7 @@ module.exports = function(io){
 		socket.on('createGame', function(data){
 			var g = server.createGame(data, config.game.colors);
 			g.setPlayer(data, socket.id);
-			socket.emit('createGame_back', g.publics());
+			socket.emit('createGame_back', g.getPublics());
 			io.sockets.emit('refreshGames', server.list);
 		})
 
@@ -27,8 +27,8 @@ module.exports = function(io){
 		});
 
 		socket.on('start', function(data){
-			games[data.id] = data;
-			io.sockets.emit('start_back', games[data.id]);
+			server.games[data.id].setPublics(data);
+			io.sockets.emit('start_back', server.games[data.id].getPublics());
 		})
 
 		socket.on('disconnect', function(){

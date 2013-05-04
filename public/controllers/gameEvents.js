@@ -7,35 +7,21 @@ var GameEvents = new Class({
 
 	onLogin: function(session){
 		game.session = session;
-		console.log(session);
 		mainMenu.show();
-		mainMenu.mod(function(mod){
-			if(mod == 'multiplayer') ioEvents.showGames();
-		});
+		mainMenu.mod();
 	},
 
 	noLogin: function(){
 		mainMenu.show();
 	},
-
 	
-
 	start: function(){
 		//SET GAME OBJECT
 		console.log('STARTING GAME...');
+		console.log(game);
 		game.players.current = game.getPlayerByNumber(1).id;
-		game.setQueue();
-		
 		map.allowClick();
-		//BROADCAST GAME OBJECT TO ALL PARTICIPANTS
-		clientServer.socket.emit('start', game.propertiesGet());
-		//LISTEN FOR SERVER RESPONSE ON START
-		clientServer.socket.on('start_back', function (data) {
-			game.propertiesSet(data);
-			console.log('First Move: ' + game.players.current);
-			mainMenu.hide();
-			ioEvents.startGame();
-		});
+		mainMenu.hide();
 		this.ask();
 	},
 

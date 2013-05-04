@@ -6,10 +6,10 @@ var usersController = {
 
 	register: function(req, res){
 		
-		var User = require('./models/Users')
-
+		var User = require('../models/Users')
+		var config = require('../config')
 		var mongoose = require('mongoose');
-		mongoose.connect(config.url, function(err){
+		mongoose.connect(config.db, function(err){
 			if (err) throw err;
 			console.log('Successfully connected to MongoDB');
 		});

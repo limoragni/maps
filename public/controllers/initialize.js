@@ -5,19 +5,27 @@ var getClasses = {
 		map = new Svg(db.options, db.regions);
 		////// Build game context //////
 		game = new Game(db.regions.info, map);
+		////// Class for client-server comunication //////
+		clientServer = new ClientServer();
 		/////// In and Out Events //////
 		ioEvents = new IoEvents();
 		/////// Events   ///////
 		events = new GameEvents();
-		////// Class for client-server comunication //////
-		clientServer = new ClientServer();
+		/////// Events   ///////
+		uiEvents = new UiEvents();
 		/////// User Interface //////
 		ui = new Ui();
 		/////// Main Menu ///////
 		mainMenu = new MainMenu('main-menu');
 		/////// Auth ///////
-		auth = new Auth('main-menu');
+		users = new Users();
 		
+		router = new Router({
+			ioEvents: ioEvents,
+			events: events,
+			users: users,
+			uiEvents: uiEvents
+		})
 	}
 }
 
@@ -39,10 +47,8 @@ window.addEvent('domready', function(){
 		}
 	})
 	
-	$('start-game').addEvent('click', function(){
-			events.start();
-	})
 	check.send();
+
 
 	
 	
