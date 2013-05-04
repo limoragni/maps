@@ -9,8 +9,8 @@ var Router = new Class({
 		var e = split[0];
 		var a = split[1];
 		console.log('Routing to: [' + e + '], Method: ' + a);
-		//this.events[e][a](data);
-		this.events[e][a].call(arguments)
+		this.events[e][a](data);
+		//this.events[e][a].call(arguments)
 	}
 
 })
