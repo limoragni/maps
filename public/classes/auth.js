@@ -11,27 +11,31 @@ var Auth = new Class({
 	},
 
 	register: function(data){
-		var self = this;
-		var ajax = new Request({
-			url: '/register',
-			method: 'post',
-			onSuccess: function(r){
-				var session = JSON.parse(r);
-				
-				if(session.username){
-					events.onLogin(session);
-				}else{
-					
-				}
-			}
-		})
 		
-		ajax.send(data);
+	
+		
 	},
 
 	check: function(){
 
-	}
+	},
+
+	formatInputs: function(data){
+		var f = data.id;
+		var i = data.getAllPrevious('input');
+		var inputs = this.formatInputs(i);
+
+		var data = {data:{}};
+		$$(inputs).each(function(i){
+			data.data[i.id] = {
+				value: i.value,
+				id: i.id,
+				name: i.name,
+			}
+		});
+		return data;
+	},
+	
 	
 });
 

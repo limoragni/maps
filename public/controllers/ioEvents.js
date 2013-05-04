@@ -1,78 +1,88 @@
 var IoEvents = new Class({
 	
 	initialize: function(){
-
+		//STABLISH SOCKET CONNECTION
+		clientServer.connect();
+		
 	},
 
-	joinGame: function(joinedGame){
+	createGame: function(){
+		mainMenu.nextScreen('join-parent', 'multiplayer-parent');
+		//ASK SERVER FOR GAME CREATTON. RECIVES BACK THE GAME OBJECT
+		clientServer.socket.emit('createGame', game.session.username);
+		clientServer.socket.on('createGame_back', function(data){
+			console.log('THE GAME: ' + data.id + ' WAS CREATED');
+			mainMenu.showJoined(data.players);
+			game.propertiesSet(data); 
+		})
+	},
+	
+	joinGame: function(){
+		mainMenu.nextScreen('join-parent', 'multiplayer-parent')
+		console.log('INPUTS')
+		var radio = mainMenu.getRadio('radio-game');
+		var joinedGame = radio;
+		
 		
 		//JOIN THE GAME
 		console.log("YOU HAVE JOINED TO: " + joinedGame)
 		game.session.joinedGame = joinedGame
 		clientServer.socket.emit('join', game.session);
 		
-		//LISTEN FOR NEW PLAYERS TO JOIN
-		clientServer.socket.on('join_back', function (data) {
-			console.log("NEW PLAYER ADDED TO THE GAME");
-			game.propertiesSet(data);
-			mainMenu.showJoined(data.players);
-		});
-
 		//LISTEN FOR GAME TO START
 		console.log('WAITING FOR START');
 		var self = this;
-		clientServer.socket.on('start_back', function (data) {
-			game.propertiesSet(data);
-			console.log('First Move: ' + game.players.current);
-			mainMenu.hide();
-			events.ask();
-			self.startGame();
-		});
 	},
 
 	showGames: function(){
-		//SHOW MULTIPLAYER OPTIONS. ADD LISTENER TO BUTTONS
-		mainMenu.multiplayer();
-		//STABLISH SOCKET CONNECTION
-		clientServer.connect();
-		
+		this.setCallbacks();
+		game.options.mod = 'mp';
+		//SHOW MULTIPLAYER OPTIONS.
+		mainMenu.nextScreen('multiplayer-parent', 'mod-parent')
 		//ASK FOR LISTED GAMES
 		clientServer.socket.emit('askGames', null);
+		
 		clientServer.socket.on('askGames_back', function(data){
 			console.log('SHOWING GAMES: ');
 			console.log(data);
 			mainMenu.showGames(data);
 		})
-		
-		//LISTEN FOR NEW CREATED GAMES (REFRESH THE LIST)
-		clientServer.socket.on('refreshGames', function(data){
-			mainMenu.showGames(data);
-		})
 	},
 
-	createGame: function(){
-		
-		//ASK SERVER FOR GAME CREATTON. RECIVES BACK THE GAME OBJECT
-		clientServer.socket.emit('createGame', game.session.username);
-		clientServer.socket.on('createGame_back', function(data){
-			console.log('THE GAME: ' + data.players + 'WAS CREATED');
-			mainMenu.showJoined(data.players);
-			game.propertiesSet(data);
-			
-			//AFTER CREATE, LISTEN FOR FURTHER JOININGS
-			clientServer.socket.on('join_back', function (data) {
-				console.log("NEW PLAYER ADDED TO THE GAME");
-				game.propertiesSet(data);
-				mainMenu.showJoined(data.players);
-			});
-		})
-	},
+	
 
 	startGame: function(){
+		game.setQueue();
+		//BROADCAST GAME OBJECT TO ALL PARTICIPANTS
+		clientServer.socket.emit('start', game.propertiesGet());
+	},
+
+	setCallbacks: function(){
 		//LISTEN FOR CLICKS ON REGIONS
 		clientServer.socket.on('click_back', function (data) {
 			var region = map.getRegionById(data);
 			events.guess(region, 'foreign');
+		});
+
+		//LISTEN FOR SERVER RESPONSE ON START
+		clientServer.socket.on('start_back', function (data) {
+			console.log('DATA FROM START BACK')
+			console.log(data)
+			game.propertiesSet(data);
+			console.log('First Move: ' + game.currentPlayer);
+			router.send('events-start', null);
+		});
+
+		//LISTEN FOR NEW CREATED GAMES (REFRESH THE LIST)
+		clientServer.socket.on('refreshGames', function(data){
+			mainMenu.showGames(data);
+		})
+
+		//LISTEN FOR NEW PLAYERS TO JOIN
+		clientServer.socket.on('join_back', function (data) {
+			console.log("NEW PLAYER ADDED TO THE GAME");
+			game.propertiesSet(data);
+			mainMenu.showJoined(data.players);
 		});
 	}
 });

@@ -18,6 +18,9 @@
 		<script type="text/javascript" src="classes/clientServer.js"></script>
 		<script type="text/javascript" src="controllers/ioEvents.js"></script>
 		<script type="text/javascript" src="controllers/gameEvents.js"></script>
+		<script type="text/javascript" src="controllers/uiEvents.js"></script>
+		<script type="text/javascript" src="controllers/users.js"></script>
+		<script type="text/javascript" src="controllers/router.js"></script>
 		<script type="text/javascript" src="controllers/initialize.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 	
@@ -27,24 +30,33 @@
 			<div id="register-parent">
 				<input id="username" type="text" name="username">
 				<input id="password" type="text" name="password">
-				<input class="ui-event" id="register" type="button" value="Send">
+				<input class="event" id="users-register" type="button" value="Send">
 			</div>
 			<div id="mod-parent">
-				<input id="multiplayer" type="button" value="Multi Player">
-				<input id="singleplayer" type="button" value="Single Player">
+				<input class="event" id="ioEvents-showGames" type="button" value="Multiplayer">
+				<input class="event" id="uiEvents-singlePlayer" type="button" value="Single Player">
 			</div>
 			<div id="multiplayer-parent">
 				<div id="game-list">
 					
 				</div>
-				<input type="button" id="create-game" value="Create">
-				<input id="join-game" type="button" value="Join">
+				<input class="event" type="button" id="ioEvents-createGame" value="Create">
+				<input class="event" id="ioEvents-joinGame" type="button" value="Join">
+			</div>
+			<div id="singlePlayer-parent">
+				<input class="radio-level" type="radio" id="begginer" value="Begginer" name="level"> 
+				<li>Begginer</li>
+				<input class="radio-level" type="radio" id="intermedium" value="Intermedium" name="level"> 
+				<li>Intermedium</li>
+				<input class="radio-level" type="radio" id="advanced" value="Advanced" name="level"> 
+				<li>Advanced</li>
+				<input class="event" type="button" id="uiEvents-setLevel" value="Start">
 			</div>	
 			<div id="join-parent">
 				<div id="join-list">
 					
 				</div>
-				<input type="button" id="start-game" value="Start">
+				<input class="event" id="ioEvents-startGame" type="button" value="Start">
 				
 			</div>			
 		</div>

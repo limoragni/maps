@@ -108,7 +108,7 @@ var  Region = new Class({
 
 	//Handle the click event of each region, bind a function to the event (guess). 
 	//Prevents of triggering the function when moving the svg.
-	setClick: function(){
+	setClick: function(fn){
 		var self = this;
 		this.node.mousemove(function(){
 			this.move = 1;
@@ -119,7 +119,8 @@ var  Region = new Class({
 		this.node.mouseup(function(){
 			console.log(map.prevent);
 			if(self.move == 0 && map.prevent == 0){
-				events.guess(self); 
+				router.send('events-guess', self, 'local');
+				//events.guess(self); 
 			}
 		})
 	},

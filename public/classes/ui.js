@@ -1,27 +1,27 @@
 var Ui = new Class({
 	
-	Implements: [Auth],
-	
 	initialize: function(){
 		this.setEvents();
 	},
 
 	setEvents: function(){
 		var self = this;
-		this.buttons = $$('.ui-event');
+		this.buttons = $$('.event');
 		this.buttons.each(function(item){
 			item.addEvent('click', function(){
-				var f = item.id;
-				var i = item.getAllPrevious('input');
-				var s = self.formatInputs(i);
-				self[f](s);
+				console.log('The button with ID: ' + item.id + ' has been clicked');
+				router.send(item.id, item);
 			});
 		});
 	},
 
-	formatInputs: function(inputs){
+	formatInputs: function(b){
+		var f = b.id;
+		var i = $(b).getAllPrevious('input');
+		
+
 		var data = {data:{}};
-		$$(inputs).each(function(i){
+		$$(i).each(function(i){
 			data.data[i.id] = {
 				value: i.value,
 				id: i.id,
@@ -47,12 +47,29 @@ var Ui = new Class({
 			div.style.top = '0px';
 			div.id = 'ui-grayout';
 		}else if(state == 'off'){
-			console.log($('ui-grayout'));
 			if($('ui-grayout')){
 				$('ui-grayout').setStyle('display', 'none')
 			}
 		}
 	},
+
+	nextScreen: function(isin, out){
+		$(isin).setStyle('display', 'block');
+		$(out).setStyle('display', 'none');
+	},
+
+	getRadio: function(cl){
+		var r = null;
+		$$('.' + cl).each(function(el){
+			if(el.checked){
+				console.log(el.value)
+				r = el.value;
+			}
+			
+		});
+		return r;
+	}
+	
 });
 
 var MainMenu = new Class({
@@ -77,49 +94,17 @@ var MainMenu = new Class({
 		this.node.style.display = 'none';
 	},
 
-	mod: function(fn){
+	mod: function(){
 		$('register-parent').setStyle('display', 'none');
 		$('mod-parent').setStyle('display', 'block');
-		$('multiplayer').addEvent('click', function(data){
-			fn('multiplayer');
-		})
-		$('singleplayer').addEvent('click', function(data){
-			fn('singleplayer');
-		})
-	},
-
-	multiplayer: function(){
-		$('mod-parent').setStyle('display', 'none');
-		$('multiplayer-parent').setStyle('display', 'block');
-		
-		$('create-game').addEvent('click', function(){
-			$('multiplayer-parent').setStyle('display', 'none');
-			ioEvents.createGame();
-		})
-		
-		$('join-game').addEvent('click', function(){
-			
-			var inputs = document.getElementsByTagName('input');
-			for (i in inputs){
-				if(inputs[i].type == "radio" && inputs[i].checked){
-					var selected = inputs[i].value
-				}
-			}
-			$('join-parent').setStyle('display', 'block');
-			$('multiplayer-parent').setStyle('display', 'none');
-			console.log('SELECTED GAME: ' + selected);
-			ioEvents.joinGame(selected);
-		})
-
-
 	},
 
 	showGames: function(data){
 		$('game-list').innerHTML = '';
 		for (v in data){
 			var t = new Element('li')
-			var c = new Element('input', {id:data[v], value:data[v], name: 'game', type:"radio"});
-			t.innerHTML = data[v]
+			var c = new Element('input', {id:data[v].id, value:data[v].id, name: 'game', type:"radio", class:"radio-game"});
+			t.innerHTML = data[v].id + " " + data[v].status;
 			c.inject($('game-list'));
 			t.inject($('game-list'));
 			

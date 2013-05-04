@@ -12,7 +12,7 @@ li{
 	margin:-125px 0px 0px -200px;
 	display:'none';
 }
-#multiplayer-parent, #mod-parent{
+#multiplayer-parent, #mod-parent, #singlePlayer-parent, #join-parent{
 	display:none;
 }
 #game-list, #join-list{
