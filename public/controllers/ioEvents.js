@@ -6,6 +6,7 @@ var IoEvents = new Class({
 		
 	},
 
+	//CREATES A NEW MULTIPLAYER GAME
 	createGame: function(){
 		mainMenu.nextScreen('join-parent', 'multiplayer-parent');
 		//ASK SERVER FOR GAME CREATTON. RECIVES BACK THE GAME OBJECT
@@ -17,14 +18,14 @@ var IoEvents = new Class({
 		})
 	},
 	
+	//JOIN TO A MULTIPLAYER GAME
 	joinGame: function(){
 		mainMenu.nextScreen('join-parent', 'multiplayer-parent')
 		console.log('INPUTS')
 		var radio = mainMenu.getRadio('radio-game');
 		var joinedGame = radio;
 		
-		
-		//JOIN THE GAME
+		//SEND INFO TO THE SERVER
 		console.log("YOU HAVE JOINED TO: " + joinedGame)
 		game.session.joinedGame = joinedGame
 		clientServer.socket.emit('join', game.session);
@@ -34,14 +35,17 @@ var IoEvents = new Class({
 		var self = this;
 	},
 
+	//SHOW A LIST OF AVAILABLE GAMES
 	showGames: function(){
+		//SET THE CALLBACKS FOR MULTIPLAYER INTERACTION
 		this.setCallbacks();
 		game.options.mod = 'mp';
+		
 		//SHOW MULTIPLAYER OPTIONS.
 		mainMenu.nextScreen('multiplayer-parent', 'mod-parent')
-		//ASK FOR LISTED GAMES
-		clientServer.socket.emit('askGames', null);
 		
+		//GET THE GAME LIST FROM THE SERVER
+		clientServer.socket.emit('askGames', null);
 		clientServer.socket.on('askGames_back', function(data){
 			console.log('SHOWING GAMES: ');
 			console.log(data);
@@ -50,14 +54,32 @@ var IoEvents = new Class({
 	},
 
 	
-
+	//START THE MULTIPLAYER GAME
 	startGame: function(){
+		//CREATE THE LIST OF COUNTRIES TO PLAY WITH
 		game.setQueue();
 		//BROADCAST GAME OBJECT TO ALL PARTICIPANTS
 		clientServer.socket.emit('start', game.propertiesGet());
 	},
 
+	initPointers: function(){
+		console.log('WTF')
+		var lastEmit = new Date().valueOf();
+		document.addEvent('mousemove', function(e){
+			if( new Date().valueOf() - lastEmit > 30){
+				clientServer.socket.emit('move',{
+					'x': e.page.x,
+					'y': e.page.y,
+					'id': game.session.username
+				});
+				lastEmit = new Date().valueOf();
+			}
+		})
+	},
+
+	//SET GENERAL CALLBACKS FOR SOCKET INTERACTION
 	setCallbacks: function(){
+		var self = this;
 		//LISTEN FOR CLICKS ON REGIONS
 		clientServer.socket.on('click_back', function (data) {
 			var region = map.getRegionById(data);
@@ -66,6 +88,8 @@ var IoEvents = new Class({
 
 		//LISTEN FOR SERVER RESPONSE ON START
 		clientServer.socket.on('start_back', function (data) {
+			ui.setPointers(game.players, 'pointers', game.session.username);
+			self.initPointers();
 			console.log('DATA FROM START BACK')
 			console.log(data)
 			game.propertiesSet(data);
@@ -84,5 +108,12 @@ var IoEvents = new Class({
 			game.propertiesSet(data);
 			mainMenu.showJoined(data.players);
 		});
+
+		clientServer.socket.on('move_back', function(data){
+			ui.pointers[data.id].setStyles({
+				left: data.x,
+				top: data.y
+			})
+		})
 	}
 });

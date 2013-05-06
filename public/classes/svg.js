@@ -4,6 +4,8 @@ var Svg = new Class({
 
 	regions:{},
 	prevent: 0,
+	paper:{},
+	element:{},
 
 	initialize: function(options, regions){
 		this.setCanvas(options.svg);
@@ -12,8 +14,11 @@ var Svg = new Class({
 	},
 
 	setCanvas: function(op){
-		R = Raphael(op.container, op.width, op.height);
-		R.ZPD({ zoom: true, pan: true, drag: false });
+		this.paper = Raphael(op.container, op.width, op.height);
+		this.element = this.paper.canvas;
+		console.log(this.element);
+		this.paper.ZPD({ zoom: true, pan: true, drag: false });
+		console.log(this.element);
 		var cont = $(op.container);
 		cont.addEvent('mousedown', function(){
 			this.setStyle('cursor', 'move');
@@ -25,7 +30,7 @@ var Svg = new Class({
 
 	drawPaths: function(regions, op){
 		for(i in regions.paths){
-			var shape = R.path(regions.paths[i]);
+			var shape = this.paper.path(regions.paths[i]);
 			shape.id = i;
 			shape.attr(op)
 			var region = new Region(shape, regions.info[i], i);

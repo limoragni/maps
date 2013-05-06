@@ -45,8 +45,6 @@ Game.prototype = {
 				r[i] = this[i];
 			}
 		}
-		console.log('GET PUBLICS');
-		console.log(r)
 		return r;
 	},
 

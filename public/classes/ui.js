@@ -1,5 +1,7 @@
 var Ui = new Class({
 	
+	pointers:{},
+
 	initialize: function(){
 		this.setEvents();
 	},
@@ -68,7 +70,16 @@ var Ui = new Class({
 			
 		});
 		return r;
-	}
+	},
+
+	setPointers: function(players, container, session){
+		for (i in players){
+			if (i != session){
+				this.pointers[i] = new Element('div', {class: 'pointer'});
+				this.pointers[i].inject($(container));
+			}
+		}
+	} 
 	
 });
 

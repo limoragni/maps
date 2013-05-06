@@ -55,9 +55,9 @@
 		 * Handler registration
 		 */
 		function setupHandlers(root){
-			root.onmousedown = handleMouseDown;
-			root.onmousemove = handleMouseMove;
-			root.onmouseup = handleMouseUp;
+			root.addEventListener('mousedown', handleMouseDown);
+			root.addEventListener('mousemove', handleMouseMove);
+			root.addEventListener('mouseup', handleMouseUp);
 			//root.onmouseout = handleMouseUp; // Decomment this to stop the pan functionality when dragging out of the SVG element
 
 			if(navigator.userAgent.toLowerCase().indexOf('webkit') >= 0)
@@ -147,6 +147,7 @@
 		 * Handle mouse move event.
 		 */
 		function handleMouseMove(evt) {
+			
 			if(evt.preventDefault)
 				evt.preventDefault();
 
@@ -179,6 +180,7 @@
 		 * Handle click event.
 		 */
 		function handleMouseDown(evt) {
+			
 			if(evt.preventDefault)
 				evt.preventDefault();
 

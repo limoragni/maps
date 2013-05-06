@@ -21,6 +21,7 @@ var Game = new Class({
 		this.svg = svg;
 	},
 
+	//TAKES THE REGIONS LIST, SHUFFLE IT, AND SER THE FIRST REGION TO PLAY.
 	setQueue: function(){
 		var i = 0;
 		for(v in this.regions){
@@ -31,6 +32,8 @@ var Game = new Class({
 		this.currentRegion = {name: this.regions[this.queue[0]].name, id: this.queue[0]};
 	},
 
+	//IF THERE ARE REGIONS LEFT, DELETES CURRENT ONE FROM THE LIST AND SET NEXT ONE TO PLAY
+	//IF THER ARE NO REGIONS LEFT, TRIGGER THE ENDING FUNCTION.
 	nextItem: function(){
 		if(this.queue[1]){
 			this.currentRegion = {name: this.regions[this.queue[1]].name, id: this.queue[1]}
@@ -45,12 +48,14 @@ var Game = new Class({
 		this.players[data.id] = new Player(data);
 	},
 
+	//SET GIVEN PROPERTIES TO THE GAME OBJECT
 	propertiesSet: function(data){
 		for (v in data){
 			this[v] = data[v];
 		}
 	},
 
+	//GET GAME PROPERTIES
 	propertiesGet: function(){
 		var r = {
 			queue: this.queue,
@@ -63,6 +68,7 @@ var Game = new Class({
 		return r;
 	},
 
+	//CHANGE PLAYER TURN. IF IS THE TURN OF THE PLAYER IN SESSION, ALLOW HIM TO CLICK ON THE REGIONS. 
 	nextPlayer: function(){
 		var c = this.currentPlayer;
 		var n = this.players[c].number;
@@ -80,7 +86,6 @@ var Game = new Class({
 	},
 
 	getPlayerByNumber: function(n){
-		
 		for (v in this.players){
 			console.log(this.players[v].number + '  ' + n);
 			if(parseInt(this.players[v].number) == n){
