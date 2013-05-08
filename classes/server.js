@@ -19,7 +19,7 @@ Server.prototype = {
 	closeGame: function(id){
 		delete this.list[id];
 		delete this.games[id]; //TODO save the game after delete.
-	}
+	},
 }
 
 ////// GAME OBJECT /////
@@ -66,18 +66,19 @@ Game.prototype = {
 	setPlayer: function(id, socket){
 		this.playersLength += 1;
 		var color = this.colors[this.playersLength]
-		var player = new Player(id, color, socket, this.playersLength);
+		var player = new Player(id, color, socket, this.playersLength, this.id);
 		this.players[player.id] = player;
 		return player;
 	},
 }
 
 ///// PLAYER OBJECT /////
-function Player(id, color, socket, number){
+function Player(id, color, socket, number, gameId){
 	this.id = id;
 	this.color = color;
 	this.socket = socket;
-	this.number = number
+	this.number = number;
+	this.gameId = gameId;
 };
 
 module.exports = new Server();

@@ -7,11 +7,14 @@ module.exports = function(io){
 
 		socket.on('askGames', function(n){
 			socket.emit('askGames_back', server.list);
+			
 		});
 		
 		socket.on('createGame', function(data){
 			var g = server.createGame(data, config.game.colors);
 			g.setPlayer(data, socket.id);
+			socket.join(g.id);
+			console.log(socket);
 			socket.emit('createGame_back', g.getPublics());
 			io.sockets.emit('refreshGames', server.list);
 		});
@@ -19,16 +22,18 @@ module.exports = function(io){
 		socket.on('join', function(data){
 			var g = server.games[data.joinedGame];
 			g.setPlayer(data.username, socket.id);
-			io.sockets.emit('join_back', g);
+			socket.join(g.id);
+			io.sockets.in(g.id).emit('join_back', g);
 		});
 		
 		socket.on('click', function (data) {
-			socket.broadcast.emit('click_back', data);
+			console.log(data);
+			socket.broadcast.to(data.gameId).emit('click_back', data);
 		});
 
 		socket.on('start', function(data){
 			server.games[data.id].setPublics(data);
-			io.sockets.emit('start_back', server.games[data.id].getPublics());
+			io.sockets.in(data.id).emit('start_back', server.games[data.id].getPublics());
 		});
 
 		socket.on('disconnect', function(){

@@ -64,15 +64,15 @@ var IoEvents = new Class({
 
 	initPointers: function(){
 		console.log('WTF')
-		var lastEmit = new Date().valueOf();
+		var lastEmit = (new Date).getTime();
 		document.addEvent('mousemove', function(e){
-			if( new Date().valueOf() - lastEmit > 30){
+			if( (new Date).getTime() - lastEmit > 30){
 				clientServer.socket.emit('move',{
 					'x': e.page.x,
 					'y': e.page.y,
 					'id': game.session.username
 				});
-				lastEmit = new Date().valueOf();
+				lastEmit = (new Date).getTime();
 			}
 		})
 	},
@@ -82,7 +82,10 @@ var IoEvents = new Class({
 		var self = this;
 		//LISTEN FOR CLICKS ON REGIONS
 		clientServer.socket.on('click_back', function (data) {
-			var region = map.getRegionById(data);
+			console.log('REGION');
+			console.log(data);
+			var region = map.getRegionById(data.region);
+			console.log(region);
 			events.guess(region, 'foreign');
 		});
 

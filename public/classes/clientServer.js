@@ -25,13 +25,13 @@ var ClientServer = new Class({
 			clientServer.state = 1;
 		})
 
-		var lastEmit = new Date().valueOf();
+		var lastEmit = (new Date).getTime();
 		map.element.addEventListener('mousemove', function(){
-			if((clientServer.state == 1) && (new Date().valueOf() - lastEmit > 30)){
+			if((clientServer.state == 1) && ((new Date).getTime() - lastEmit > 30)){
 				var view = document.getElementById('viewport')
 				var matrix = view.getAttribute('transform');
 				clientServer.socket.emit('pan', matrix);
-				lastEmit = new Date().valueOf();
+				lastEmit = (new Date).getTime();
 			}
 		})
 

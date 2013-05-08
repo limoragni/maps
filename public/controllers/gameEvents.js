@@ -46,7 +46,7 @@ var GameEvents = new Class({
 		game.chance = 0;
 
 		region.node.attr('fill', game.players[game.currentPlayer].color);
-		if(from != "foreign") clientServer.socket.emit('click', region.id);
+		if(from != "foreign") clientServer.socket.emit('click', {region: region.id, gameId: game.id});
 		this.ask();
 	},
 
@@ -57,7 +57,7 @@ var GameEvents = new Class({
 		}else{
 			console.log(game.currentPlayer + ' FAIL, NEXT PLAYER');
 			game.nextPlayer();
-			if(from != "foreign") clientServer.socket.emit('click', region.id);
+			if(from != "foreign") clientServer.socket.emit('click', {region: region.id, gameId: game.id});
 			events.ask();
 		}
 	},
@@ -69,7 +69,7 @@ var GameEvents = new Class({
 		game.nextPlayer();
 		game.nextItem();
 		this.ask();
-		if(from != "foreign") clientServer.socket.emit('click', region.id);
+		if(from != "foreign") clientServer.socket.emit('click', {region: region.id, gameId: game.id});
 	},
 
 	end: function(){

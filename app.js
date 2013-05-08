@@ -1,4 +1,5 @@
 var config = require('./config');
+var nomo = require('node-monkey').start();
 
 var express = require('express')
   , http = require('http')
