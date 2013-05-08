@@ -50,8 +50,8 @@ module.exports = function(io){
 			socket.broadcast.emit('move_back', data);
 		});
 
-		socket.on('matrix', function(data){
-			socket.broadcast.emit('matrix_back', data);
+		socket.on('zoom', function(data){
+			socket.broadcast.emit('zoom_back', data);
 		});
 
 		socket.on('pan', function(data){

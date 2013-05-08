@@ -3,58 +3,60 @@ var ClientServer = new Class({
 	data: {},
 	socket: {},
 	state: 0,
+	store: {},
+	lasEmit:0,
+	svg: {},
 	
-	initialize: function(){
-		
+	initialize: function(svg){
+		this.svg = svg;
+		this.canvasEvents();
+		this.lastEmit = (new Date).getTime();
 	},
 
 	connect: function(host){
 		this.socket = io.connect(host);
-		this.setEvents();
-		this.setMatrix();
 	},
 
-	setEvents: function(){
+	canvasEvents: function(){
+		var self = this;
+		
 		if(navigator.userAgent.toLowerCase().indexOf('webkit') >= 0){
-			window.addEventListener('mousewheel', this.sendMatrix, false); // Chrome/Safari
+			window.addEventListener('mousewheel', function(){self.sendMatrix('zoom')}, false); // Chrome/Safari
 		}else{
-			window.addEventListener('DOMMouseScroll', this.sendMatrix, false); // Others
+			window.addEventListener('DOMMouseScroll', function(){self.sendMatrix('zoom')}, false); // Others
 		}
-
-		map.element.addEventListener('mousedown', function(){
-			clientServer.state = 1;
-		})
-
-		var lastEmit = (new Date).getTime();
-		map.element.addEventListener('mousemove', function(){
-			if((clientServer.state == 1) && ((new Date).getTime() - lastEmit > 30)){
-				var view = document.getElementById('viewport')
-				var matrix = view.getAttribute('transform');
-				clientServer.socket.emit('pan', matrix);
-				lastEmit = (new Date).getTime();
+		
+		this.svg.element.addEventListener('mousemove', function(){
+			if((self.svg.state.click == 1) && ((new Date).getTime() - self.lastEmit > 30)){
+				self.sendMatrix('pan');
+				self.lastEmit = (new Date).getTime();
 			}
-		})
-
-		map.element.addEventListener('mouseup', function(){
-			clientServer.state = 0;
-		})
-
-		clientServer.socket.on('pan_back', function(data){
-			var view = document.getElementById('viewport')
-			view.setAttribute('transform', data);
 		})
 	},
 	
-	sendMatrix: function(){
-		var view = document.getElementById('viewport')
-		var matrix = view.getAttribute('transform');
-		clientServer.socket.emit('matrix', matrix);
+	sendMatrix: function(e){
+		var matrix = this.svg.paper.canvas.getAttribute('transform');
+		this.socket.emit(e, matrix);
 	},
 
-	setMatrix: function(){
-		clientServer.socket.on('matrix_back', function(data){
-			var view = document.getElementById('viewport')
-			view.setAttribute('transform', data);
-		});
+	setMatrix: function(data){
+		this.svg.paper.canvas.setAttribute('transform', data);
+	},
+
+	buffer: function( id, t, d, fn){
+		if(!this.store[id]) this.store[id] = [];
+		var self = this
+		if(!self.store[id][0]){
+			self.store[id].push(d);
+			var inter = setInterval(function(){
+				if(self.store[id][0]){
+					fn(self.store[id][0]);
+					self.store[id].erase(self.store[id][0]);
+				}else{
+					clearInterval(inter);
+				}
+			}, t);
+		}
+		this.store[id].push(d);
 	}
 });

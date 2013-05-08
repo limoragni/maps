@@ -3,14 +3,17 @@ var Svg = new Class({
 	//Implements: [Options],
 
 	regions:{},
-	prevent: 0,
 	paper:{},
 	element:{},
+	state:{},
 
 	initialize: function(options, regions){
 		this.setCanvas(options.svg);
 		this.drawPaths(regions, options.region);
 		this.scale();
+		this.state['move'] = 0;
+		this.state['prevent'] = 0;
+		this.state['click'] = 0;
 	},
 
 	setCanvas: function(op){
@@ -26,6 +29,22 @@ var Svg = new Class({
 		cont.addEvent('mouseup', function(){
 			this.setStyle('cursor', 'default');
 		})
+
+		var self = this;
+
+		this.element.addEventListener('mousemove', function(){
+			self.state['move'] = 1;
+			console.log(self.state.move);
+		})
+		
+		this.element.addEventListener('mousedown', function(){
+			self.state['move'] = 0;
+			self.state['click'] = 1;
+		});
+
+		this.element.addEventListener('mouseup', function(){
+			self.state['click'] = 0;
+		});
 	},
 
 	drawPaths: function(regions, op){
@@ -33,7 +52,7 @@ var Svg = new Class({
 			var shape = this.paper.path(regions.paths[i]);
 			shape.id = i;
 			shape.attr(op)
-			var region = new Region(shape, regions.info[i], i);
+			var region = new Region(shape, regions.info[i], i, this.state);
 			this.regions[i] = region;
 		}
 	},
@@ -72,11 +91,11 @@ var Svg = new Class({
 	},
 
 	preventClick: function(){
-		this.prevent = 1;
+		this.state['prevent'] = 1;
 	},
 
 	allowClick: function(){
-		this.prevent = 0;
+		this.state['prevent'] = 0;
 	}
 });
 
@@ -85,12 +104,13 @@ var  Region = new Class({
 	node: {},
 	info: {},
 	id: 0,
-	move: 0,
+	state: {},
 	
-	initialize: function(node, info, id){
+	initialize: function(node, info, id, state){
 		this.node = node;
 		this.info = info;
 		this.id = id;
+		this.state = state;
 		this.setHover();
 		this.setClick();		
 	},
@@ -115,15 +135,9 @@ var  Region = new Class({
 	//Prevents of triggering the function when moving the svg.
 	setClick: function(fn){
 		var self = this;
-		this.node.mousemove(function(){
-			this.move = 1;
-		});
-		this.node.mousedown(function(){
-			this.move = 0;
-		});
 		this.node.mouseup(function(){
 			console.log(map.prevent);
-			if(self.move == 0 && map.prevent == 0){
+			if(self.state.move == 0 && self.state.prevent == 0){
 				router.send('events-guess', self, 'local');
 				//events.guess(self); 
 			}

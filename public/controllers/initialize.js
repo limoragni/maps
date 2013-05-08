@@ -6,9 +6,9 @@ var getClasses = {
 		////// Build game context //////
 		game = new Game(db.regions.info, map);
 		////// Class for client-server comunication //////
-		clientServer = new ClientServer();
+		clientServer = new ClientServer(map);
 		/////// In and Out Events //////
-		ioEvents = new IoEvents();
+		ioEvents = new IoEvents(map);
 		/////// Events   ///////
 		events = new GameEvents();
 		/////// Events   ///////

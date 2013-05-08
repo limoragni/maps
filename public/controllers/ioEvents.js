@@ -1,9 +1,8 @@
 var IoEvents = new Class({
 	
 	initialize: function(){
-		//STABLISH SOCKET CONNECTION
+		//STABLISH SOCKET CONNECTION @TODO: JUST WHEN MULTIPLAYER IS ON
 		clientServer.connect();
-		
 	},
 
 	//CREATES A NEW MULTIPLAYER GAME
@@ -112,32 +111,26 @@ var IoEvents = new Class({
 			mainMenu.showJoined(data.players);
 		});
 
-		var buffer=[];
-		var last = (new Date).getTime();
 		clientServer.socket.on('move_back', function(data){
-			console.log(buffer[0])
-			if(!buffer[0]){
-				var inter = setInterval(function(){
-					console.log((new Date).getTime() - last);
-					last = (new Date).getTime();
-					if(buffer[0]){
-						ui.pointers[buffer[0].id].setStyles({
-							left: buffer[0].x,
-							top: buffer[0].y
-						});
-						buffer.erase(buffer[0]);
-					}else{
-						 console.log('CLEAR');
-						 clearInterval(inter);
-					}
-					
-				}, 30);
-			}
-			buffer.push(data);
-			
-			
+			clientServer.buffer('pointers', 30, data ,function(el){
+				ui.pointers[el.id].setStyles({
+					left: el.x,
+					top: el.y
+				});
+			});
 		});
 
-		
+		clientServer.socket.on('zoom_back', function(data){
+			clientServer.buffer('zoom', 30, data ,function(el){
+				clientServer.setMatrix(el);
+			});
+
+		});
+
+		clientServer.socket.on('pan_back', function(data){
+			clientServer.buffer('pan', 30, data ,function(el){
+				clientServer.setMatrix(el);
+			});
+		});
 	}
 });
