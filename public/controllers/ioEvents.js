@@ -103,7 +103,7 @@ var IoEvents = new Class({
 		//LISTEN FOR NEW CREATED GAMES (REFRESH THE LIST)
 		clientServer.socket.on('refreshGames', function(data){
 			mainMenu.showGames(data);
-		})
+		});
 
 		//LISTEN FOR NEW PLAYERS TO JOIN
 		clientServer.socket.on('join_back', function (data) {
@@ -112,11 +112,32 @@ var IoEvents = new Class({
 			mainMenu.showJoined(data.players);
 		});
 
+		var buffer=[];
+		var last = (new Date).getTime();
 		clientServer.socket.on('move_back', function(data){
-			ui.pointers[data.id].setStyles({
-				left: data.x,
-				top: data.y
-			})
-		})
+			console.log(buffer[0])
+			if(!buffer[0]){
+				var inter = setInterval(function(){
+					console.log((new Date).getTime() - last);
+					last = (new Date).getTime();
+					if(buffer[0]){
+						ui.pointers[buffer[0].id].setStyles({
+							left: buffer[0].x,
+							top: buffer[0].y
+						});
+						buffer.erase(buffer[0]);
+					}else{
+						 console.log('CLEAR');
+						 clearInterval(inter);
+					}
+					
+				}, 30);
+			}
+			buffer.push(data);
+			
+			
+		});
+
+		
 	}
 });
