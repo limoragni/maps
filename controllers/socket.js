@@ -47,15 +47,15 @@ module.exports = function(io){
 		});
 
 		socket.on('move', function(data){
-			socket.broadcast.emit('move_back', data);
+			socket.broadcast.to(data.gameId).emit('move_back', data);
 		});
 
 		socket.on('zoom', function(data){
-			socket.broadcast.emit('zoom_back', data);
+			socket.broadcast.to(data.gameId).emit('zoom_back', data.matrix);
 		});
 
 		socket.on('pan', function(data){
-			socket.broadcast.emit('pan_back', data);
+			socket.broadcast.to(data.gameId).emit('pan_back', data.matrix);
 		});
 		
 	});

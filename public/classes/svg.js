@@ -12,7 +12,7 @@ var Svg = new Class({
 		this.drawPaths(regions, options.region);
 		this.scale();
 		this.state['move'] = 0;
-		this.state['prevent'] = 0;
+		this.state['prevent'] = 1;
 		this.state['click'] = 0;
 	},
 
@@ -92,11 +92,12 @@ var Svg = new Class({
 
 	preventClick: function(){
 		this.state['prevent'] = 1;
+		console.log('PREVENT');
 	},
 
 	allowClick: function(){
 		this.state['prevent'] = 0;
-	}
+	},
 });
 
 var  Region = new Class({
@@ -136,7 +137,7 @@ var  Region = new Class({
 	setClick: function(fn){
 		var self = this;
 		this.node.mouseup(function(){
-			console.log(map.prevent);
+			console.log(self.state.prevent);
 			if(self.state.move == 0 && self.state.prevent == 0){
 				router.send('events-guess', self, 'local');
 				//events.guess(self); 

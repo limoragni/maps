@@ -7,6 +7,7 @@ var GameEvents = new Class({
 
 	onLogin: function(session){
 		game.session = session;
+		clientServer.setPlayerId(session.username);
 		mainMenu.show();
 		mainMenu.mod();
 	},
@@ -20,8 +21,11 @@ var GameEvents = new Class({
 		console.log('STARTING GAME...');
 		console.log(game);
 		game.currentPlayer = game.getPlayerByNumber(1).id;
-		map.allowClick();
 		mainMenu.hide();
+		if(game.myTurn()){
+			map.allowClick();
+		}
+		
 		this.ask();
 	},
 

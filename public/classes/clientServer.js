@@ -6,15 +6,27 @@ var ClientServer = new Class({
 	store: {},
 	lasEmit:0,
 	svg: {},
+	gameId: 0,
+	userId:0,
 	
 	initialize: function(svg){
 		this.svg = svg;
-		this.canvasEvents();
-		this.lastEmit = (new Date).getTime();
+		this.lastEmit = {
+			pointer:(new Date).getTime(),
+			move: (new Date).getTime()
+		}
 	},
 
 	connect: function(host){
 		this.socket = io.connect(host);
+	},
+
+	setGameId: function(id){
+		this.gameId = id;
+	},
+
+	setPlayerId: function(id){
+		this.userId = id;
 	},
 
 	canvasEvents: function(){
@@ -27,16 +39,29 @@ var ClientServer = new Class({
 		}
 		
 		this.svg.element.addEventListener('mousemove', function(){
-			if((self.svg.state.click == 1) && ((new Date).getTime() - self.lastEmit > 30)){
+			if((self.svg.state.click == 1) && ((new Date).getTime() - self.lastEmit.move > 30)){
 				self.sendMatrix('pan');
-				self.lastEmit = (new Date).getTime();
+				self.lastEmit.move = (new Date).getTime();
+			}
+		})
+
+		document.addEvent('mousemove', function(e){
+			if( (new Date).getTime() - self.lastEmit.pointer > 30){
+				clientServer.socket.emit('move',{
+					x: e.page.x,
+					y: e.page.y,
+					id: self.userId,
+					gameId: self.gameId
+
+				});
+				self.lastEmit.pointer = (new Date).getTime();
 			}
 		})
 	},
 	
 	sendMatrix: function(e){
 		var matrix = this.svg.paper.canvas.getAttribute('transform');
-		this.socket.emit(e, matrix);
+		this.socket.emit(e, {matrix:matrix, gameId: this.gameId});
 	},
 
 	setMatrix: function(data){

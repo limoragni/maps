@@ -80,7 +80,7 @@ var Game = new Class({
 		}
 		var player = this.getPlayerByNumber(set);
 		this.currentPlayer = player.id;
-		if(this.currentPlayer == this.session.username){
+		if(this.myTurn()){
 			this.svg.allowClick();
 		}
 	},
@@ -98,8 +98,16 @@ var Game = new Class({
 
 	addScore: function(){
 		this.players[this.currentPlayer].score += 1;
-	}
+	},
 
+	myTurn: function(){
+		if(this.currentPlayer == this.session.username){
+			return true;
+		}else{
+			return false;
+		}
+			
+	}
 });
 
 var Player = new Class({

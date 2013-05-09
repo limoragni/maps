@@ -13,7 +13,8 @@ var IoEvents = new Class({
 		clientServer.socket.on('createGame_back', function(data){
 			console.log('THE GAME: ' + data.id + ' WAS CREATED');
 			mainMenu.showJoined(data.players);
-			game.propertiesSet(data); 
+			game.propertiesSet(data);
+			clientServer.setGameId(data.id);
 		})
 	},
 	
@@ -61,21 +62,6 @@ var IoEvents = new Class({
 		clientServer.socket.emit('start', game.propertiesGet());
 	},
 
-	initPointers: function(){
-		console.log('WTF')
-		var lastEmit = (new Date).getTime();
-		document.addEvent('mousemove', function(e){
-			if( (new Date).getTime() - lastEmit > 30){
-				clientServer.socket.emit('move',{
-					'x': e.page.x,
-					'y': e.page.y,
-					'id': game.session.username
-				});
-				lastEmit = (new Date).getTime();
-			}
-		})
-	},
-
 	//SET GENERAL CALLBACKS FOR SOCKET INTERACTION
 	setCallbacks: function(){
 		var self = this;
@@ -91,12 +77,12 @@ var IoEvents = new Class({
 		//LISTEN FOR SERVER RESPONSE ON START
 		clientServer.socket.on('start_back', function (data) {
 			ui.setPointers(game.players, 'pointers', game.session.username);
-			self.initPointers();
 			console.log('DATA FROM START BACK')
 			console.log(data)
 			game.propertiesSet(data);
 			console.log('First Move: ' + game.currentPlayer);
 			router.send('events-start', null);
+			clientServer.canvasEvents();
 		});
 
 		//LISTEN FOR NEW CREATED GAMES (REFRESH THE LIST)
@@ -109,6 +95,7 @@ var IoEvents = new Class({
 			console.log("NEW PLAYER ADDED TO THE GAME");
 			game.propertiesSet(data);
 			mainMenu.showJoined(data.players);
+			clientServer.setGameId(data.id);
 		});
 
 		clientServer.socket.on('move_back', function(data){
