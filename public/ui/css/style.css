@@ -8,6 +8,8 @@ li{
 	display: inline;
 }
 
+/* MAIN MENU */
+
 #main-menu{
 	width: 400px;
 	height: 250px;
@@ -26,6 +28,8 @@ li{
 	background-color: #fff;
 }
 
+/* POINTERS */
+
 #pointers{
 	position:relative;
 }
@@ -35,4 +39,40 @@ li{
 	width:15px;
 	height:22px;
 	background:url('../img/pointer.png') no-repeat -4px 0;
+}
+
+/* CHAT */
+
+#chat{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+	height: 330px;
+	width: 210px;
+	margin-right: 5px;
+}
+
+#chat-read{
+	background-color: white;
+	height: 270px;
+	width: 188px;
+	vertical-align: bottom ;
+	overflow-y: auto;
+	border: 1px solid black;
+	padding: 10px;
+}
+
+#chat-input{
+	height: 40px;
+	width: 210px
+}
+
+.chat-message{
+	width:190px;
+	word-wrap: break-word;
+}
+
+.chat-id{
+	font-weight: bold;
 }

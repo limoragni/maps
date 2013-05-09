@@ -85,3 +85,38 @@ var ClientServer = new Class({
 		this.store[id].push(d);
 	}
 });
+
+var Chat = new Class({
+	
+	initialize: function(user, game, cs){
+		this.setInterface();
+		this.cs = cs;
+	},
+
+	setInterface: function(){
+		var self = this;
+		$('chat-input').addEvent('keydown', function(event){
+			if(event.key == 'enter'){
+				event.stop();
+				var v = $('chat-input').value
+				self.cs.socket.emit('chat',{
+					text: v,
+					user: self.cs.userId,
+					game: self.cs.gameId
+				})
+				self.write(v, 'me');
+				$('chat-input').value = '';
+			}
+		})
+	},
+
+	write: function(text, id){
+		var html = '<div class="chat-entry"> <li class="chat-id">'+ id +': </li> <li class="chat-message">'+ text+'</li> <div>';
+		var s = new Element('div', {
+			html: html
+		})
+		s.inject($('chat-read'));
+		var h = $('chat-read').scrollHeight;
+		$('chat-read').scrollTop = 	$('chat-read').scrollHeight;
+	}
+});

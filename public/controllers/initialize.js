@@ -7,6 +7,8 @@ var getClasses = {
 		game = new Game(db.regions.info, map);
 		////// Class for client-server comunication //////
 		clientServer = new ClientServer(map);
+		////// Chat //////
+		chat = new Chat(game.session.username, game.id, clientServer);
 		/////// In and Out Events //////
 		ioEvents = new IoEvents(map);
 		/////// Events   ///////

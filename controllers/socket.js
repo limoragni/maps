@@ -57,6 +57,10 @@ module.exports = function(io){
 		socket.on('pan', function(data){
 			socket.broadcast.to(data.gameId).emit('pan_back', data.matrix);
 		});
+
+		socket.on('chat', function(data){
+			socket.broadcast.to(data.game).emit('chat_back', data);
+		});
 		
 	});
 }

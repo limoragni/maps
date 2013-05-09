@@ -119,5 +119,10 @@ var IoEvents = new Class({
 				clientServer.setMatrix(el);
 			});
 		});
+
+		clientServer.socket.on('chat_back', function(data){
+			console.log(data);
+			chat.write(data.text, data.user);
+		});
 	}
 });
