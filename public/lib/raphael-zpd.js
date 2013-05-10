@@ -60,10 +60,14 @@
 			root.addEventListener('mouseup', handleMouseUp);
 			//root.onmouseout = handleMouseUp; // Decomment this to stop the pan functionality when dragging out of the SVG element
 
-			if(navigator.userAgent.toLowerCase().indexOf('webkit') >= 0)
+			if(navigator.userAgent.toLowerCase().indexOf('webkit') >= 0){
 				window.addEventListener('mousewheel', handleMouseWheel, false); // Chrome/Safari
-			else
-				window.addEventListener('DOMMouseScroll', handleMouseWheel, false); // Others
+			}
+			else{
+				window.addEventListener('DOMMouseScroll', handleMouseWheel, false);
+				window.addEventListener('onmousewheel', handleMouseWheel, false) // Others
+			}
+				
 		}
 
 		/**

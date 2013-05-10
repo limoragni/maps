@@ -32,6 +32,8 @@ var GameEvents = new Class({
 	ask: function(){
 		console.log('PLAYER:' + game.currentPlayer);
 		console.log('COUNTRY:' + game.currentRegion.name);
+		interface.printRegion(game.currentRegion.name);
+		interface.printPlayer(game.currentPlayer);
 	},
 
 	guess: function(region, from){
@@ -46,6 +48,7 @@ var GameEvents = new Class({
 		console.log('SUCCESS');
 		game.nextItem();
 		game.addScore();
+		interface.printScore();
 		game.nextPlayer();
 		game.chance = 0;
 

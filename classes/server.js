@@ -79,6 +79,7 @@ function Player(id, color, socket, number, gameId){
 	this.socket = socket;
 	this.number = number;
 	this.gameId = gameId;
+	this.score = 0;
 };
 
 module.exports = new Server();

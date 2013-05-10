@@ -19,6 +19,8 @@ var getClasses = {
 		ui = new Ui();
 		/////// Main Menu ///////
 		mainMenu = new MainMenu('main-menu');
+		/////// Main Menu ///////
+		interface = new Interface(map, game);
 		/////// Auth ///////
 		users = new Users();
 		

@@ -135,3 +135,37 @@ var MainMenu = new Class({
 	}
 });
 
+var Interface = new Class({
+
+	Extends: Ui,
+
+	svg: {},
+	game:{},
+
+	initialize: function(svg, game){
+		this.svg = svg;
+		this.game = game;
+	},
+
+	printRegion: function(r){
+		console.log(r);
+		var c = $('i-region');
+		c.innerHTML = 'Country:  ' +r;
+	},
+
+	printPlayer: function(r){
+		var c = $('i-player');
+		c.innerHTML = 'Player:  ' + r;
+	},
+
+	printScore: function(){
+		console.log(game.players);
+		for (i in game.players){
+			var p = new Element('li', {
+				html: 'Player: ' + game.players[i].id + ' Score: ' + game.players[i].score
+			})
+			p.inject($('scores'));  
+		}
+	}
+
+});

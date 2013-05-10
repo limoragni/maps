@@ -76,3 +76,17 @@ li{
 .chat-id{
 	font-weight: bold;
 }
+
+#ask{
+	background-color: black;
+	color: white;
+	text-align: center;
+}
+
+#ask h4{
+	margin: 0;
+}
+
+#scores{
+	background-color: black;
+}

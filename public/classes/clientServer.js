@@ -31,11 +31,12 @@ var ClientServer = new Class({
 
 	canvasEvents: function(){
 		var self = this;
-		
+		console.log('WJEIFEFIEFEIFJEIFEIFJEFIPWJEFPAIWVPAINRVPAINSVAIN')
 		if(navigator.userAgent.toLowerCase().indexOf('webkit') >= 0){
 			window.addEventListener('mousewheel', function(){self.sendMatrix('zoom')}, false); // Chrome/Safari
 		}else{
 			window.addEventListener('DOMMouseScroll', function(){self.sendMatrix('zoom')}, false); // Others
+			window.addEventListener('onmousewheel', function(){self.sendMatrix('zoom')}, false);
 		}
 		
 		this.svg.element.addEventListener('mousemove', function(){
@@ -61,7 +62,8 @@ var ClientServer = new Class({
 	
 	sendMatrix: function(e){
 		var matrix = this.svg.paper.canvas.getAttribute('transform');
-		this.socket.emit(e, {matrix:matrix, gameId: this.gameId});
+		if(game.currentPlayer == game.session.username)
+			this.socket.emit(e, {matrix:matrix, gameId: this.gameId});
 	},
 
 	setMatrix: function(data){
