@@ -77,6 +77,13 @@ var Ui = new Class({
 			if (i != session){
 				this.pointers[i] = new Element('div', {class: 'pointer'});
 				this.pointers[i].inject($(container));
+				var sq = new Element('div', {
+					styles:{
+						backgroundColor: players[i].color,
+					},
+					class: 'square'
+				});
+				sq.inject(this.pointers[i])
 			}
 		}
 	} 
@@ -114,7 +121,13 @@ var MainMenu = new Class({
 		$('game-list').innerHTML = '';
 		for (v in data){
 			var t = new Element('li')
-			var c = new Element('input', {id:data[v].id, value:data[v].id, name: 'game', type:"radio", class:"radio-game"});
+			var c = new Element('input', {
+				id:data[v].id, 
+				value:data[v].id, 
+				name: 'game', 
+				type:"radio", 
+				class:"radio-game"
+			});
 			t.innerHTML = data[v].id + " " + data[v].status;
 			c.inject($('game-list'));
 			t.inject($('game-list'));
@@ -160,7 +173,7 @@ var Interface = new Class({
 
 	printScore: function(){
 		console.log(game.players);
-		$('$scores').innerHTML = '';
+		$('scores').innerHTML = '';
 		for (i in game.players){
 			var p = new Element('li', {
 				html: 'Player: ' + game.players[i].id + ' Score: ' + game.players[i].score

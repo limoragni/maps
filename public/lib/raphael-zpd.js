@@ -87,8 +87,9 @@
 		 */
 		function setCTM(element, matrix) {
 			var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-
-			element.setAttribute("transform", s);
+			
+			if(window.game.currentPlayer == window.game.session.username)
+				element.setAttribute("transform", s);
 		}
 
 		/**
