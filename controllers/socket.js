@@ -42,8 +42,8 @@ module.exports = function(io){
 					delete games[g];
 					delete games.list[g];
 				}
-			}
-			*/
+			}*/
+			
 		});
 
 		socket.on('move', function(data){

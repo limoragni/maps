@@ -160,6 +160,7 @@ var Interface = new Class({
 
 	printScore: function(){
 		console.log(game.players);
+		$('$scores').innerHTML = '';
 		for (i in game.players){
 			var p = new Element('li', {
 				html: 'Player: ' + game.players[i].id + ' Score: ' + game.players[i].score
