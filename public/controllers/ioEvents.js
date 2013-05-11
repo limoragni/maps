@@ -124,5 +124,9 @@ var IoEvents = new Class({
 			console.log(data);
 			chat.write(data.text, data.user);
 		});
+
+		clientServer.socket.on('disconnect_back', function(data){
+			alert('The Game creator is disconnected!');
+		});
 	}
 });

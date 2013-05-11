@@ -6,8 +6,8 @@ function Server(){
 };
 
 Server.prototype = {
-	createGame: function(creator, colors){
-		var g =	new Game(creator, colors);
+	createGame: function(creator, colors, socket){
+		var g =	new Game(creator, colors, socket);
 		this.games[g.id] = g; 
 		this.list[g.id] = {
 			id: g.id,
@@ -20,10 +20,18 @@ Server.prototype = {
 		delete this.list[id];
 		delete this.games[id]; //TODO save the game after delete.
 	},
+
+	isCreator: function(socket){
+		for(i in this.games){
+			console.log(this.games[i].creator.socket)
+			if(this.games[i].creator.socket == socket)
+				return this.games[i].id;
+		}
+	}
 }
 
 ////// GAME OBJECT /////
-function Game(creator, colors){
+function Game(creator, colors, socket){
 	this.setId(creator);
 	this.players = {};
 	this.playersLength = 0;
@@ -34,7 +42,10 @@ function Game(creator, colors){
 	this.currentRegion = {};
 	this.options = {};
 	this.chance = 0;
-
+	this.creator = {
+		id: creator,
+		socket: socket
+	};
 };
 
 Game.prototype = {

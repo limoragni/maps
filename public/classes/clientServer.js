@@ -31,7 +31,6 @@ var ClientServer = new Class({
 
 	canvasEvents: function(){
 		var self = this;
-		console.log('WJEIFEFIEFEIFJEIFEIFJEFIPWJEFPAIWVPAINRVPAINSVAIN')
 		if(navigator.userAgent.toLowerCase().indexOf('webkit') >= 0){
 			window.addEventListener('mousewheel', function(){self.sendMatrix('zoom')}, false); // Chrome/Safari
 		}else{

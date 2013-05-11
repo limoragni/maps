@@ -18,8 +18,6 @@ var GameEvents = new Class({
 	
 	start: function(){
 		//SET GAME OBJECT
-		console.log('STARTING GAME...');
-		console.log(game);
 		game.currentPlayer = game.getPlayerByNumber(1).id;
 		mainMenu.hide();
 		if(game.myTurn()){
@@ -30,22 +28,19 @@ var GameEvents = new Class({
 	},
 
 	ask: function(){
-		console.log('PLAYER:' + game.currentPlayer);
-		console.log('COUNTRY:' + game.currentRegion.name);
 		interface.printRegion(game.currentRegion.name);
 		interface.printPlayer(game.currentPlayer);
 	},
 
 	guess: function(region, from){
 		map.preventClick();
-		console.log('Clicked By: ' + game.currentPlayer);
-		console.log('CLicked on: ' + region.info.name);
+		;console.log('CLicked on: ' + region.info.name);
 		game.chance += 1;
 		(region.id == game.currentRegion.id) ? this.success(region, from) : this.fail(region, from);
 	},
 
 	success: function(region, from){
-		console.log('SUCCESS');
+		$('audio-coin').play();
 		game.nextItem();
 		game.addScore();
 		interface.printScore();
@@ -58,11 +53,10 @@ var GameEvents = new Class({
 	},
 
 	fail: function(region, from){
-		console.log('CHANCE NUMBER: ' + game.chance + 'PLAYERS LENGHT: ' + game.playersLength);
+		$('audio-error').play();
 		if(game.chance >= game.playersLength){
 			this.outOfChance(region, from);
 		}else{
-			console.log(game.currentPlayer + ' FAIL, NEXT PLAYER');
 			game.nextPlayer();
 			if(from != "foreign") clientServer.socket.emit('click', {region: region.id, gameId: game.id});
 			events.ask();
@@ -70,8 +64,8 @@ var GameEvents = new Class({
 	},
 
 	outOfChance: function(region, from){
+		$('audio-error').play();
 		game.chance = 0;
-		console.log('NO CHANCE');
 		map.regions[game.currentRegion.id].node.attr('fill', '#FF0000');
 		game.nextPlayer();
 		game.nextItem();

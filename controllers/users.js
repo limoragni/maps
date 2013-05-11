@@ -14,7 +14,7 @@ var usersController = {
 			console.log('Successfully connected to MongoDB');
 		});
 		var username = req.body.username.value;
-		var password = req.body.username.value;
+		var password = req.body.password.value;
 
 		User.findOne({username: username}, function(err, user){
 			if (err) throw err;
