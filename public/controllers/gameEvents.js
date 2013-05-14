@@ -34,7 +34,7 @@ var GameEvents = new Class({
 
 	guess: function(region, from){
 		map.preventClick();
-		;console.log('CLicked on: ' + region.info.name);
+		console.log('CLicked on: ' + region.info.name);
 		game.chance += 1;
 		(region.id == game.currentRegion.id) ? this.success(region, from) : this.fail(region, from);
 	},
@@ -66,7 +66,10 @@ var GameEvents = new Class({
 	outOfChance: function(region, from){
 		$('audio-error').play();
 		game.chance = 0;
-		map.regions[game.currentRegion.id].node.attr('fill', '#FF0000');
+		var c = map.regions[game.currentRegion.id]
+		c.node.attr('fill', '#FF0000');
+		var cam = c.cameraPosition();
+		map.goto(cam);
 		game.nextPlayer();
 		game.nextItem();
 		this.ask();

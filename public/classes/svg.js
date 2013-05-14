@@ -21,8 +21,9 @@ var Svg = new Class({
 		this.element = this.paper.canvas;
 		console.log(this.element);
 		this.paper.ZPD({ zoom: true, pan: true, drag: false });
-		console.log(this.element);
+		console.log(this.paper);
 		var cont = $(op.container);
+		
 		cont.addEvent('mousedown', function(){
 			this.setStyle('cursor', 'move');
 		})
@@ -52,7 +53,7 @@ var Svg = new Class({
 			var shape = this.paper.path(regions.paths[i]);
 			shape.id = i;
 			shape.attr(op)
-			var region = new Region(shape, regions.info[i], i, this.state);
+			var region = new Region(shape, regions.info[i], i, this);
 			this.regions[i] = region;
 		}
 	},
@@ -62,26 +63,26 @@ var Svg = new Class({
 	},
 
 	scale: function(){
-		var viewport = $('viewport');
-		var bbox = viewport.getBBox();
+		var bbox = this.paper.canvas.getBBox();
 		
 		var wdif = screen.width - bbox.width;
 		var hdif = screen.height - bbox.height;
 		if (wdif < hdif){
-			var scale = (screen.width - 50) / bbox.width;
-			var ty = 50//(screen.height - (bbox.height * scale)) / 2
+			
+			var scale = (screen.width * 0.9) / bbox.width;
+			var ty = ((screen.height / 2) / scale) - ((bbox.height * scale) / 2);
+			
 			var tx = 20;
 		}else{
-			var scale = (screen.height - 50) / bbox.height;
+			var scale = (screen.height) / bbox.height;
 			var tx = (screen.width - (bbox.width * scale)) / 2
 			var ty = 20;
 		}
-		viewport.setAttribute("transform", "scale("+scale+") translate("+tx+","+ty+")");
+		this.paper.canvas.setAttribute("transform", "scale("+scale+") translate("+tx+","+ty+") ");
 	},
 
 	getRegionById: function(id){
 		var r = null;
-		console.log('Get by id');	
 		Object.each(this.regions, function(item){
 			if(item.id == id){
 				r = item;
@@ -92,12 +93,42 @@ var Svg = new Class({
 
 	preventClick: function(){
 		this.state['prevent'] = 1;
-		console.log('PREVENT');
 	},
 
 	allowClick: function(){
 		this.state['prevent'] = 0;
 	},
+
+	goto: function(coordinates){
+		console.log(coordinates);
+		var s     =  coordinates.scale,
+			x     =  coordinates.x,
+			y     =  coordinates.y
+			vb    =  this.paper.canvas,
+			ctm   =  vb.getCTM(),
+			speed =  100,
+			si    =  (s - ctm.a) /speed,
+			sf    =  ctm.a,
+			xi    =  (x*s - ctm.e)/speed,
+			xf    =  ctm.e,
+			yi    =  (y*s - ctm.f) /speed,
+			yf    =  ctm.f,
+			i     =  0;
+			
+		function run(){
+			if(i<speed){
+				sf += si;
+				xf += xi; 
+				yf += yi;
+				vb.setAttribute("transform", "matrix("+sf+",0,0,"+sf+","+xf+","+yf+")");
+				setTimeout(run, 1);
+				i++;
+			}
+		}
+		
+		run();
+	}
+
 });
 
 var  Region = new Class({
@@ -106,14 +137,16 @@ var  Region = new Class({
 	info: {},
 	id: 0,
 	state: {},
+	viewport:{},
 	
-	initialize: function(node, info, id, state){
+	initialize: function(node, info, id, svg){
 		this.node = node;
 		this.info = info;
 		this.id = id;
-		this.state = state;
+		this.state = svg.state;
 		this.setHover();
-		this.setClick();		
+		this.setClick();
+		this.viewport = svg.paper.canvas;		
 	},
 
 	setHover: function(){
@@ -144,5 +177,47 @@ var  Region = new Class({
 			}
 		})
 	},
+
+	cameraPosition: function(){
+		var w = window.getSize();
+		//Get the viewport that contains the map
+		var vb = $('viewport');
+		//Get the bounding box of the country to show
+		var pB = this.node.getBBox(true);
+		//Get the bounding box of the viewport
+		var vB = vb.getBBox(true);
+		
+		
+		//Set the value of the scale in relation with the size of the country
+		if (pB.width > 250 || pB.height > 250){
+			var scale = 1.5;
+		}
+		else if (pB.width > 100 || pB.height > 100){
+			var scale = 2.5;
+		}
+		else if (pB.width > 50 || pB.height > 50){
+			var scale = 3;
+		}
+		else if (pB.width > 10|| pB.height > 10){
+			var scale = 4;
+		}
+		else if (pB.width > 0 || pB.height > 0){
+			var scale = 7;
+		}
+		
+		var tX = -(pB.x + pB.width / 2);
+		var tY = -(pB.y + pB.height / 2);
+		
+		var rtX = tX + (w.x / 2) / scale;
+		var rtY = tY + ((w.y) / 2) / scale;
+		
+ 		var destination = {
+			scale: scale,
+			x:rtX,
+			y:rtY
+		}
+		
+		return destination;
+	}
 });
 
