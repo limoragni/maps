@@ -63,9 +63,13 @@ var Svg = new Class({
 	},
 
 	scale: function(){
-		var bbox = this.paper.canvas.getBBox();
+		var w = window.getSize();
+		var v = this.paper.canvas.getBBox();
 		
-		var wdif = screen.width - bbox.width;
+		var scale = (w.x * 0.9) / v.width;
+		var tx = ((w.x / scale) * 0.1) / 2;
+		var ty = ((w.y / 2) / scale) - v.height / 2;
+		/*var wdif = screen.width - bbox.width;
 		var hdif = screen.height - bbox.height;
 		if (wdif < hdif){
 			
@@ -77,7 +81,7 @@ var Svg = new Class({
 			var scale = (screen.height) / bbox.height;
 			var tx = (screen.width - (bbox.width * scale)) / 2
 			var ty = 20;
-		}
+		}*/
 		this.paper.canvas.setAttribute("transform", "scale("+scale+") translate("+tx+","+ty+") ");
 	},
 
