@@ -119,7 +119,9 @@ var MainMenu = new Class({
 
 	showGames: function(data){
 		$('game-list').innerHTML = '';
+		var e = true;
 		for (v in data){
+			e = false;
 			var t = new Element('li')
 			var c = new Element('input', {
 				id:data[v].id, 
@@ -133,14 +135,17 @@ var MainMenu = new Class({
 			t.inject($('game-list'));
 			
 		}
+		if(e)
+			$('game-list').innerHTML = "There are no created games";
+
 	},
 
 	showJoined: function(players){
 		$('join-list').innerHTML = '';
 		for (v in players){
 			if(players[v].id){
-				var t = new Element('li');
-				t.innerHTML = players[v].id;
+				var t = new Element('li', {class: 'joined-player'});
+				t.innerHTML = 'Player ' + players[v].number + ': ' + players[v].id;
 				t.inject($('join-list'));
 			}
 			

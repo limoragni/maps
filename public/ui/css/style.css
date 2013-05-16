@@ -1,6 +1,8 @@
 body{
 	margin: 0px;
 	padding: 0px;
+	background-image: url('../img/back.jpg');
+	font-family: Helvetica, Arial, Sans-Serif;
 }
 
 li{
@@ -8,24 +10,40 @@ li{
 	display: inline;
 }
 
+h4{ 
+	margin:0;
+}
+
 /* MAIN MENU */
 
 #main-menu{
 	width: 400px;
-	height: 250px;
 	left:50%;
 	position: absolute;
 	top:50%;
 	margin:-125px 0px 0px -200px;
 	display:'none';
+	background-color: #FFF;
+	padding: 15px;
+	text-align: center;
 }
 
 #multiplayer-parent, #mod-parent, #singlePlayer-parent, #join-parent{
 	display:none;
+	vertical-align: middle;
 }
 
 #game-list, #join-list{
-	background-color: #fff;
+	background-color: #DDD;
+	margin-top: 10px;
+}
+
+.joined-player{
+	margin-right: 15px;
+}
+
+#ioEvents-startGame{
+	display: none;
 }
 
 /* POINTERS */

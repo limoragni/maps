@@ -8,9 +8,10 @@ db.options = {
 	
 	region:{
 		fill: '#000',
-        'fill-opacity': 0.7,
-        stroke: 'none',
-        'stroke-width': 0,
+        'fill-opacity': 0.5,
+        stroke: '#000',
+        'stroke-width': 0.5,
+        'stroke-opacity': 1,
         'stroke-linejoin': 'round',
         cursor: 'pointer'
 	},

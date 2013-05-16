@@ -8,6 +8,7 @@ var IoEvents = new Class({
 	//CREATES A NEW MULTIPLAYER GAME
 	createGame: function(){
 		mainMenu.nextScreen('join-parent', 'multiplayer-parent');
+		$('ioEvents-startGame').setStyle('display', 'block')
 		//ASK SERVER FOR GAME CREATTON. RECIVES BACK THE GAME OBJECT
 		clientServer.socket.emit('createGame', game.session.username);
 		clientServer.socket.on('createGame_back', function(data){

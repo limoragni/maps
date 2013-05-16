@@ -40,9 +40,6 @@ module.exports = function(io){
 				server.closeGame(isc);
 				io.sockets.in(isc).emit('disconnect_back', true);
 			}
-				
-			
-			
 		});
 
 		socket.on('move', function(data){

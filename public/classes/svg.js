@@ -19,9 +19,7 @@ var Svg = new Class({
 	setCanvas: function(op){
 		this.paper = Raphael(op.container, op.width, op.height);
 		this.element = this.paper.canvas;
-		console.log(this.element);
 		this.paper.ZPD({ zoom: true, pan: true, drag: false });
-		console.log(this.paper);
 		var cont = $(op.container);
 		
 		cont.addEvent('mousedown', function(){
@@ -69,19 +67,6 @@ var Svg = new Class({
 		var scale = (w.x * 0.9) / v.width;
 		var tx = ((w.x / scale) * 0.1) / 2;
 		var ty = ((w.y / 2) / scale) - v.height / 2;
-		/*var wdif = screen.width - bbox.width;
-		var hdif = screen.height - bbox.height;
-		if (wdif < hdif){
-			
-			var scale = (screen.width * 0.9) / bbox.width;
-			var ty = ((screen.height / 2) / scale) - ((bbox.height * scale) / 2);
-			
-			var tx = 20;
-		}else{
-			var scale = (screen.height) / bbox.height;
-			var tx = (screen.width - (bbox.width * scale)) / 2
-			var ty = 20;
-		}*/
 		this.paper.canvas.setAttribute("transform", "scale("+scale+") translate("+tx+","+ty+") ");
 	},
 
