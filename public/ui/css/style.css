@@ -1,7 +1,7 @@
 body{
 	margin: 0px;
 	padding: 0px;
-	background-image: url('../img/back.jpg');
+	background: url('../img/back.jpg') repeat;
 	font-family: Helvetica, Arial, Sans-Serif;
 }
 
@@ -23,7 +23,7 @@ h4{
 	top:50%;
 	margin:-125px 0px 0px -200px;
 	display:'none';
-	background-color: #FFF;
+	background-color: rgba(255,255,255,.5);
 	padding: 15px;
 	text-align: center;
 }
@@ -75,7 +75,7 @@ h4{
 	bottom: 0;
 	right: 0;
 	overflow: hidden;
-	height: 330px;
+	height: 370px;
 	width: 210px;
 	margin-right: 5px;
 }
@@ -104,10 +104,19 @@ h4{
 	font-weight: bold;
 }
 
+#chat-toggle{
+	background-color: #F2D8A7;
+	padding: 10px;
+	cursor: pointer;
+}
+
+/* ASK BAR */
+
 #ask{
-	background-color: black;
-	color: white;
+	background-color: #F2D8A7;
+	color: black;
 	text-align: center;
+	padding: 10px;
 }
 
 #ask h4{

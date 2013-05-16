@@ -7,8 +7,8 @@ db.options = {
 	},
 	
 	region:{
-		fill: '#000',
-        'fill-opacity': 0.5,
+		fill: '#F2D8A7',
+        'fill-opacity': 0.7,
         stroke: '#000',
         'stroke-width': 0.5,
         'stroke-opacity': 1,

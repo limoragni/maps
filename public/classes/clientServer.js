@@ -89,6 +89,8 @@ var ClientServer = new Class({
 
 var Chat = new Class({
 	
+	toggle: true,
+	
 	initialize: function(user, game, cs){
 		this.setInterface();
 		this.cs = cs;
@@ -107,6 +109,19 @@ var Chat = new Class({
 				})
 				self.write(v, 'me');
 				$('chat-input').value = '';
+			}
+		});
+		$('chat-toggle').addEvent('click', function(){
+			if(self.toggle){
+				self.toggle = false;
+				$('chat-read').setStyle('display', 'none');
+				$('chat-write').setStyle('display', 'none');
+				$('chat').setStyle('height', '39px');
+			}else{
+				self.toggle = true;
+				$('chat-read').setStyle('display', 'block');
+				$('chat-write').setStyle('display', 'block');
+				$('chat').setStyle('height', '370px');
 			}
 		})
 	},
