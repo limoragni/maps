@@ -88,14 +88,14 @@ var Svg = new Class({
 		this.state['prevent'] = 0;
 	},
 
-	goto: function(coordinates){
+	goto: function(coordinates, fn){
 		console.log(coordinates);
 		var s     =  coordinates.scale,
 			x     =  coordinates.x,
 			y     =  coordinates.y
 			vb    =  this.paper.canvas,
 			ctm   =  vb.getCTM(),
-			speed =  100,
+			speed =  10,
 			si    =  (s - ctm.a) /speed,
 			sf    =  ctm.a,
 			xi    =  (x*s - ctm.e)/speed,
@@ -105,17 +105,32 @@ var Svg = new Class({
 			i     =  0;
 			
 		function run(){
+			console.log(1984);
 			if(i<speed){
 				sf += si;
 				xf += xi; 
 				yf += yi;
 				vb.setAttribute("transform", "matrix("+sf+",0,0,"+sf+","+xf+","+yf+")");
-				setTimeout(run, 1);
+				setTimeout(run, 24);
 				i++;
+			}else{
+				setTimeout(fn(), 300);
 			}
 		}
 		
 		run();
+	}, 
+
+	highlight: function(region){
+		if(region){
+			region.node.attr({stroke: "#FF0000"});
+			region.node.toFront();
+			this.failed = region;
+		}else{
+			if(this.failed)
+				this.failed.node.attr({stroke: "#000"});
+		}
+			
 	}
 
 });
@@ -127,6 +142,7 @@ var  Region = new Class({
 	id: 0,
 	state: {},
 	viewport:{},
+	paper: {},
 	
 	initialize: function(node, info, id, svg){
 		this.node = node;
@@ -135,7 +151,8 @@ var  Region = new Class({
 		this.state = svg.state;
 		this.setHover();
 		this.setClick();
-		this.viewport = svg.paper.canvas;		
+		this.viewport = svg.paper.canvas;	
+		this.paper = svg.paper;	
 	},
 
 	setHover: function(){
@@ -159,7 +176,6 @@ var  Region = new Class({
 	setClick: function(fn){
 		var self = this;
 		this.node.mouseup(function(){
-			console.log(self.state.prevent);
 			if(self.state.move == 0 && self.state.prevent == 0){
 				router.send('events-guess', self, 'local');
 				//events.guess(self); 
@@ -207,6 +223,32 @@ var  Region = new Class({
 		}
 		
 		return destination;
-	}
+	},
+/*
+	failed: function(){
+		console.log('THIS PAPER CANVAS')
+		var svg = document.getElementsByTagName('svg')[0];
+		var p = svg.createSVGPoint();
+		p.x = event.x;
+		p.y = event.y;
+		
+		var pt = p.matrixTransform(this.paper.canvas.getScreenCTM().inverse());
+		this.node.attr({stroke: "#FF0000"});
+		this.node.toFront();
+		
+		var x = this.node.getBBox().x,
+			y = this.node.getBBox().y,
+			h = this.node.getBBox().height,
+			w = this.node.getBBox().width,
+			px = x + w / 2,
+			py = y + h / 2;
+ 		if(h > x){
+ 			var r = x * 0.1;
+ 		}else{
+ 			var r = h * 0.1;
+ 		}
+ 		
+ 		this.paper.text(pt.x, pt.y, 'X').attr({'font-size': '5', fill:'#FF0000', 'stroke-width': 0.5});
+	}*/
 });
 

@@ -1,6 +1,7 @@
 var Ui = new Class({
 	
 	pointers:{},
+	buttons:{},
 
 	initialize: function(){
 		this.setEvents();
@@ -86,8 +87,7 @@ var Ui = new Class({
 				sq.inject(this.pointers[i])
 			}
 		}
-	} 
-	
+	},
 });
 
 var MainMenu = new Class({

@@ -46,7 +46,6 @@ var GameEvents = new Class({
 		interface.printScore();
 		game.nextPlayer();
 		game.chance = 0;
-
 		region.node.attr('fill', game.players[game.currentPlayer].color);
 		if(from != "foreign") clientServer.socket.emit('click', {region: region.id, gameId: game.id});
 		this.ask();
@@ -54,6 +53,9 @@ var GameEvents = new Class({
 
 	fail: function(region, from){
 		$('audio-error').play();
+		map.highlight();
+		map.highlight(region);	
+			
 		if(game.chance >= game.playersLength){
 			this.outOfChance(region, from);
 		}else{
@@ -67,9 +69,13 @@ var GameEvents = new Class({
 		$('audio-error').play();
 		game.chance = 0;
 		var c = map.regions[game.currentRegion.id]
-		c.node.attr('fill', '#FF0000');
+		
 		var cam = c.cameraPosition();
-		map.goto(cam);
+		map.goto(cam, function(){
+			c.node.animate({fill:'#FF0000'}, 1000, 'linear', function(){
+
+			});
+		});
 		game.nextPlayer();
 		game.nextItem();
 		this.ask();
