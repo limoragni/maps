@@ -21,11 +21,11 @@ var Auth = new Class({
 	},
 
 	formatInputs: function(data){
-		var f = data.id;
-		var i = data.getAllPrevious('input');
-		var inputs = this.formatInputs(i);
-
-		var data = {data:{}};
+		var f = data.id,
+			i = data.getAllPrevious('input'),
+			inputs = this.formatInputs(i),
+			data = {data:{}};
+		
 		$$(inputs).each(function(i){
 			data.data[i.id] = {
 				value: i.value,

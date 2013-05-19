@@ -1,6 +1,7 @@
 var Game = new Class({
 	
 	session:{}, //@TODO MOVE TO AUTH
+	name:'',
 	regions:{},
 	queue:[],
 	currentRegion:{},
@@ -63,21 +64,24 @@ var Game = new Class({
 			players: this.players,
 			options: this.options,
 			chance: this.chance,
-			id: this.id
+			id: this.id,
+			name: this.name
 		}
 		return r;
 	},
 
 	//CHANGE PLAYER TURN. IF IS THE TURN OF THE PLAYER IN SESSION, ALLOW HIM TO CLICK ON THE REGIONS. 
 	nextPlayer: function(){
-		var c = this.currentPlayer;
-		var n = this.players[c].number;
-		var add = n + 1;
+		var c = this.currentPlayer,
+			n = this.players[c].number,
+			add = n + 1;
+		
 		if(add > this.playersLength){
 			var set = 1;
 		}else{
 			var set = add;
 		}
+		
 		var player = this.getPlayerByNumber(set);
 		this.currentPlayer = player.id;
 		if(this.myTurn()){

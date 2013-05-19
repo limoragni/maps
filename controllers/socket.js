@@ -1,7 +1,8 @@
 module.exports = function(io){
 
-	var server = require('../classes/server');
-	var config = require('../config');
+	var server = require('../classes/server'),
+		config = require('../config');
+	
 	io.set('log level', 1);
 	io.sockets.on('connection', function (socket) {
 
@@ -10,13 +11,13 @@ module.exports = function(io){
 		});
 		
 		socket.on('createGame', function(data){
-			var g = server.createGame(data, config.game.colors, socket.id);
-			g.setPlayer(data, socket.id);
+			var g = server.createGame(data.user, config.game.colors, socket.id, data.name);
+			g.setPlayer(data.user, socket.id);
 			socket.join(g.id);
 			socket.emit('createGame_back', g.getPublics());
 			io.sockets.emit('refreshGames', server.list);
 		});
-
+		
 		socket.on('join', function(data){
 			var g = server.games[data.joinedGame];
 			g.setPlayer(data.username, socket.id);

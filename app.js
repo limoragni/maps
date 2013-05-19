@@ -3,15 +3,15 @@ var config = require('./config');
 if(!process.env.SUBDOMAIN)
 	var nomo = require('node-monkey').start();
 
-var express = require('express')
-  , http = require('http')
-
-var app = express();
-var MongoStore = require('connect-mongo')(express);
-console.log(config.db)
-var sessionStore = new MongoStore({url:config.db});
+var express = require('express'), 
+	http = require('http'),
+	app = express(),
+	server = app.listen(1344);
+	
+var	MongoStore = require('connect-mongo')(express),
+	sessionStore = new MongoStore({url:config.db});
  
-var server = app.listen(1344);
+
 var io = require('socket.io').listen(server);
 
 app.configure(function(){

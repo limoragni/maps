@@ -19,11 +19,10 @@ var Ui = new Class({
 	},
 
 	formatInputs: function(b){
-		var f = b.id;
-		var i = $(b).getAllPrevious('input');
+		var f = b.id,
+			i = $(b).getAllPrevious('input'),
+			data = {data:{}};
 		
-
-		var data = {data:{}};
 		$$(i).each(function(i){
 			data.data[i.id] = {
 				value: i.value,
@@ -57,6 +56,8 @@ var Ui = new Class({
 	},
 
 	nextScreen: function(isin, out){
+		console.log(isin);
+		console.log(out);
 		$(isin).setStyle('display', 'block');
 		$(out).setStyle('display', 'none');
 	},
@@ -69,6 +70,14 @@ var Ui = new Class({
 				r = el.value;
 			}
 			
+		});
+		return r;
+	},
+
+	getInputs: function(cl){
+		var r ={};
+		$$('.' + cl).each(function(el){
+			r[el.id] = el.value;
 		});
 		return r;
 	},
@@ -130,7 +139,7 @@ var MainMenu = new Class({
 				type:"radio", 
 				class:"radio-game"
 			});
-			t.innerHTML = data[v].id + " " + data[v].status;
+			t.innerHTML = 'Host: '+ data[v].creator.id + ' // Game: ' + data[v].name + " // Status: " + data[v].status;
 			c.inject($('game-list'));
 			t.inject($('game-list'));
 			
@@ -166,7 +175,6 @@ var Interface = new Class({
 	},
 
 	printRegion: function(r){
-		console.log(r);
 		var c = $('i-region');
 		c.innerHTML = 'Country:  ' +r;
 	},

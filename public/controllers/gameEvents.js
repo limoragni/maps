@@ -20,9 +20,10 @@ var GameEvents = new Class({
 		//SET GAME OBJECT
 		game.currentPlayer = game.getPlayerByNumber(1).id;
 		mainMenu.hide();
-		if(game.myTurn()){
+		interface.printScore();
+
+		if(game.myTurn())
 			map.allowClick();
-		}
 		
 		this.ask();
 	},
@@ -68,9 +69,8 @@ var GameEvents = new Class({
 	outOfChance: function(region, from){
 		$('audio-error').play();
 		game.chance = 0;
-		var c = map.regions[game.currentRegion.id]
-		
-		var cam = c.cameraPosition();
+		var c = map.regions[game.currentRegion.id],
+			cam = c.cameraPosition();
 		map.goto(cam, function(){
 			c.node.animate({fill:'#FF0000'}, 1000, 'linear', function(){
 

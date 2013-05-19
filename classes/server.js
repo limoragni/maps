@@ -6,12 +6,14 @@ function Server(){
 };
 
 Server.prototype = {
-	createGame: function(creator, colors, socket){
-		var g =	new Game(creator, colors, socket);
+	createGame: function(creator, colors, socket, name){
+		var g =	new Game(creator, colors, socket, name);
 		this.games[g.id] = g; 
 		this.list[g.id] = {
 			id: g.id,
-			status: g.status
+			name: g.name,
+			status: g.status,
+			creator: g.creator
 		}
 		return g;
 	},
@@ -31,8 +33,9 @@ Server.prototype = {
 }
 
 ////// GAME OBJECT /////
-function Game(creator, colors, socket){
+function Game(creator, colors, socket, name){
 	this.setId(creator);
+	this.name = name;
 	this.players = {};
 	this.playersLength = 0;
 	this.currentPlayer = '';
@@ -76,7 +79,7 @@ Game.prototype = {
 
 	setPlayer: function(id, socket){
 		this.playersLength += 1;
-		var color = this.colors[this.playersLength]
+		var color = this.colors[this.playersLength];
 		var player = new Player(id, color, socket, this.playersLength, this.id);
 		this.players[player.id] = player;
 		return player;

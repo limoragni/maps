@@ -61,12 +61,12 @@ var Svg = new Class({
 	},
 
 	scale: function(){
-		var w = window.getSize();
-		var v = this.paper.canvas.getBBox();
+		var w = window.getSize(),
+			v = this.paper.canvas.getBBox(),
+			scale = (w.x * 0.9) / v.width,
+		 	tx = ((w.x / scale) * 0.1) / 2,
+		 	ty = ((w.y / 2) / scale) - v.height / 2;
 		
-		var scale = (w.x * 0.9) / v.width;
-		var tx = ((w.x / scale) * 0.1) / 2;
-		var ty = ((w.y / 2) / scale) - v.height / 2;
 		this.paper.canvas.setAttribute("transform", "scale("+scale+") translate("+tx+","+ty+") ");
 	},
 
@@ -184,13 +184,13 @@ var  Region = new Class({
 	},
 
 	cameraPosition: function(){
-		var w = window.getSize();
+		var w = window.getSize(),
 		//Get the viewport that contains the map
-		var vb = $('viewport');
+			vb = $('viewport'),
 		//Get the bounding box of the country to show
-		var pB = this.node.getBBox(true);
+			pB = this.node.getBBox(true),
 		//Get the bounding box of the viewport
-		var vB = vb.getBBox(true);
+			vB = vb.getBBox(true);
 		
 		
 		//Set the value of the scale in relation with the size of the country
@@ -210,11 +210,11 @@ var  Region = new Class({
 			var scale = 7;
 		}
 		
-		var tX = -(pB.x + pB.width / 2);
-		var tY = -(pB.y + pB.height / 2);
+		var tX = -(pB.x + pB.width / 2),
+		 	tY = -(pB.y + pB.height / 2);
 		
-		var rtX = tX + (w.x / 2) / scale;
-		var rtY = tY + ((w.y) / 2) / scale;
+		var rtX = tX + (w.x / 2) / scale,
+			rtY = tY + ((w.y) / 2) / scale;
 		
  		var destination = {
 			scale: scale,

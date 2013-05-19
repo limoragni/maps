@@ -42,6 +42,13 @@
 				<input class="event" id="ioEvents-showGames" type="button" value="Multiplayer">
 				<input class="event" id="uiEvents-singlePlayer" type="button" value="Single Player">
 			</div>
+			
+			<div id="setGame-parent">
+				<li>Name</li>
+				<input class="input-setGame" id="game-name" type="text" name="game-name">
+				<input class="event" type="button" id="ioEvents-createGame" value="Create Game">
+			</div>
+
 			<div id="multiplayer-parent">
 				<h4>Game list</h4>
 				<div id="game-list">
@@ -59,7 +66,7 @@
 					<li>Asia</li>
 					<input type="radio">
 				</div> -->
-				<input class="event" type="button" id="ioEvents-createGame" value="Create">
+				<input class="event" type="button" id="ioEvents-setGame" value="Create">
 				<input class="event" id="ioEvents-joinGame" type="button" value="Join">
 			</div>
 			<div id="singlePlayer-parent">
@@ -71,6 +78,7 @@
 				<li>Advanced</li>
 				<input class="event" type="button" id="uiEvents-setLevel" value="Start">
 			</div>	
+			
 			<div id="join-parent">
 				<h4>Players list</h4>
 				<div id="join-list">
