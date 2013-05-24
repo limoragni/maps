@@ -45,9 +45,9 @@ var GameEvents = new Class({
 		game.nextItem();
 		game.addScore();
 		interface.printScore();
+		region.node.attr('fill', game.players[game.currentPlayer].color);
 		game.nextPlayer();
 		game.chance = 0;
-		region.node.attr('fill', game.players[game.currentPlayer].color);
 		if(from != "foreign") clientServer.socket.emit('click', {region: region.id, gameId: game.id});
 		this.ask();
 	},
