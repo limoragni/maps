@@ -6,7 +6,7 @@ if(!process.env.SUBDOMAIN)
 var express = require('express'), 
 	http = require('http'),
 	app = express(),
-	server = app.listen(1344);
+	server = app.listen(7777);
 	
 var	MongoStore = require('connect-mongo')(express),
 	sessionStore = new MongoStore({url:config.db});

@@ -39,8 +39,6 @@
 
 	function init(paper) {
 		var root = paper.canvas;
-		console.log('ROOT!!!!!');
-		console.log(root);
 		var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 		g.id = 'viewport';
 		root.appendChild(g);
